@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../homepage.dart';
+import 'package:toastify_flutter/toastify_flutter.dart';
+import '../routes.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -13,16 +14,43 @@ class _LoginState extends State<Login> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
-  signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: email.text,
-      password: password.text,
+  bool isValidEmail(String email) {
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     );
+    return emailRegex.hasMatch(email);
+  }
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const Homepage()),
-    );
+  Future<void> signIn() async {
+    // Email validation
+    if (!isValidEmail(email.text.trim())) {
+      ToastifyFlutter.error(
+        context,
+        message: 'Please enter a valid email address',
+        duration: 5,
+        position: ToastPosition.top,
+        style: ToastStyle.flatColored,
+      );
+      return; // stop execution
+    }
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email.text.trim(),
+        password: password.text.trim(),
+      );
+
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
+    } on FirebaseAuthException catch (e) {
+      ToastifyFlutter.error(
+        context,
+        message: 'Invalid username or password',
+        duration: 5,
+        position: ToastPosition.top,
+        style: ToastStyle.flatColored,
+        onClose: true,
+      );
+    }
   }
 
   @override

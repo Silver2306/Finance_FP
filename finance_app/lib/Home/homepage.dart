@@ -1,4 +1,4 @@
-import 'package:finance_app/LoginSignUp/login.dart';
+import 'package:finance_app/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -12,11 +12,12 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final user = FirebaseAuth.instance.currentUser;
 
-  signOut() async {
+  Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
-    Navigator.pushReplacement(
+    Navigator.pushNamedAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const Login()),
+      AppRoutes.login,
+      (route) => false,
     );
   }
 
@@ -29,7 +30,10 @@ class _HomepageState extends State<Homepage> {
           mainAxisAlignment: .center,
           children: [
             Text("Welcome ${user!.email}"),
-            ElevatedButton(onPressed: (() => signOut()), child: Text("Sign out")),
+            ElevatedButton(
+              onPressed: (() => signOut()),
+              child: Text("Sign out"),
+            ),
           ],
         ),
       ),

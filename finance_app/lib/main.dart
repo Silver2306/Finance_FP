@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'LoginSignUp/login.dart';
+import 'routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,12 +15,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    String initial = AppRoutes.login;
+
+    if (FirebaseAuth.instance.currentUser != null) {
+      initial = AppRoutes.home;
+    }
+
     return MaterialApp(
       title: 'Finance App',
+      initialRoute: initial,
+      routes: AppRoutes.routes,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: Login(),
     );
   }
 }
@@ -40,9 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: const Text('Main.dart'),
-      ),
+      body: Center(child: const Text('Main.dart')),
     );
   }
 }
