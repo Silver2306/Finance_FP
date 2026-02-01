@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toastify_flutter/toastify_flutter.dart';
 import '../routes.dart';
-import 'signup.dart';
+import 'login.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _LoginState extends State<Login> {
+class _SignUpState extends State<SignUp> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
 
   bool isValidEmail(String email) {
     final emailRegex = RegExp(
@@ -34,18 +35,28 @@ class _LoginState extends State<Login> {
       );
       return; // stop execution
     }
+  }
 
+  //Pushing data into firebase
+  Future<void> signUp() async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email.text.trim(),
         password: password.text.trim(),
       );
 
       Navigator.pushReplacementNamed(context, AppRoutes.home);
     } on FirebaseAuthException catch (e) {
+      String message ="Something went wrong";
+
+    if (e.code == 'email-already-in-use') {
+      message = "Email already registered";
+    } else if (e.code == 'weak-password') {
+      message = "Password is too weak";
+    }
       ToastifyFlutter.error(
         context,
-        message: 'Invalid username or password',
+        message: message,
         duration: 5,
         position: ToastPosition.top,
         style: ToastStyle.flatColored,
@@ -53,26 +64,17 @@ class _LoginState extends State<Login> {
       );
     }
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
-      body: Padding(
+      appBar: AppBar(title: Text("Sign Up")),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: .center,
           children: [
-            //TextField(
-              //controller: email,
-              //decoration: InputDecoration(hint: Text("Enter Email: ")),
-            //),
-            //TextField(
-              //controller: password,
-              //decoration: InputDecoration(hint: Text("Enter Password: ")),
-            //),
-            //SizedBox(height: 10),
-            //ElevatedButton(onPressed: (() => signIn()), child: Text("Login")),
+           
             _header(context),
             
             _inputField(context),
@@ -89,13 +91,14 @@ Widget _header(context){
   return const Column(
     children:[
       Text(
-        "Welcome Back",
+        "Start Your Journey",
+        textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 40,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.bold,          
         ),
       ), 
-      Text("Enter your credentials to login"),
+      Text("Create your account"),
     ],
   );
 }
@@ -130,8 +133,22 @@ Widget _inputField(context) {
           obscureText: true,
         ),
         const SizedBox(height: 10),
+        TextField(
+          controller:confirmPassword,
+          decoration: InputDecoration(
+            hintText: "Password",
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(18),
+                borderSide: BorderSide.none),
+            fillColor: Colors.purple.withOpacity(0.1),
+            filled: true,
+            prefixIcon: const Icon(Icons.password),
+          ),
+          obscureText: true,
+        ),
+        const SizedBox(height: 10),
         ElevatedButton(
-          onPressed: (() => signIn()),
+          onPressed: (() => signUp()),
           
           style: ElevatedButton.styleFrom(
             shape: const StadiumBorder(),
@@ -139,7 +156,7 @@ Widget _inputField(context) {
             backgroundColor: Colors.purple.withOpacity(0.7),
           ),
           child: const Text(
-            "Login",
+            "Sign Up",
             style: TextStyle(fontSize: 20),
           ),
         )
@@ -151,15 +168,15 @@ Widget _inputField(context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Dont have an account? "),
+        const Text("Alreardy have an account? "),
         TextButton(
             onPressed: () {
               Navigator.pushNamed(
               context,
-              AppRoutes.signup,
+              AppRoutes.login,
             );
             },
-            child: const Text("Sign Up", style: TextStyle(color: Colors.purple),)
+            child: const Text("Sign In", style: TextStyle(color: Colors.purple),)
         )
       ],
     );

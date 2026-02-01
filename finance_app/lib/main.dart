@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
     }
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Finance App',
       initialRoute: initial,
       routes: AppRoutes.routes,
