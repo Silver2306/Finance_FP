@@ -1,6 +1,7 @@
 import 'package:finance_app/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../mywidgets.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -24,18 +25,35 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Home Page")),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: .center,
+      appBar: AppBar(title: Text("Dashboard")),
+      body: Column(
+          mainAxisAlignment: .start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Welcome ${user!.email}"),
-            ElevatedButton(
-              onPressed: (() => signOut()),
-              child: Text("Sign out"),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                displayCard(
+                  context: context,
+                  title: "Income",
+                  amount: "₹25,000",
+                  goToText: "Add Income",
+                  appRoute: AppRoutes.addinc,
+                  backgroundColor: const Color.fromARGB(255, 241, 142, 223),
+                  icon: Icons.arrow_upward,
+                ),
+                displayCard(
+                  context: context,
+                  title: "Expense",
+                  amount: "₹5,000",
+                  goToText: "Add Expense",
+                  appRoute: AppRoutes.addexp,
+                  backgroundColor: const Color.fromARGB(255, 117, 147, 216),
+                  icon: Icons.arrow_downward,
+                ),
+              ],
+            )
           ],
-        ),
       ),
     );
   }
