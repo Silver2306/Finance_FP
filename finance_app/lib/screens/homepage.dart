@@ -1,7 +1,7 @@
-import 'package:finance_app/routes.dart';
+import 'package:finance_app/components-services/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../mywidgets.dart';
+import '../components-services/mywidgets.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -52,7 +52,9 @@ class _HomepageState extends State<Homepage> {
                   icon: Icons.arrow_downward,
                 ),
               ],
-            )
+            ),
+            //appButton(context: context, label: 'Signout', routeName: AppRoutes.login)
+            ElevatedButton(onPressed:  (() => signOut()), child: Text("Sign Out"))
           ],
       ),
     );

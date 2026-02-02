@@ -1,5 +1,9 @@
+import 'package:finance_app/components-services/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:toastify_flutter/toastify_flutter.dart';
+import 'firebase_services.dart';
 
+//Custom Header Widget
 Widget header(String htext, String subtext, double fsize) {
   return Column(
     children: [
@@ -12,6 +16,7 @@ Widget header(String htext, String subtext, double fsize) {
   );
 }
 
+//Custom Elevated Button - bg: purple, text: white
 Widget appButton({
   required BuildContext context,
   required String label,
@@ -36,25 +41,36 @@ Widget appButton({
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
       backgroundColor: Colors.purple.withOpacity(0.7),
     ),
-    child: Text(label, style: const TextStyle(fontSize: 20)),
+    child: Text(
+      label,
+      style: const TextStyle(fontSize: 20, color: Colors.white),
+    ),
   );
 }
 
+//Custom href text
 Widget goToPage({
   required BuildContext context,
-  required String goToText,
+  String? prefixText,
+  required String actionText,
   required String routeName,
+  Color actionColor = Colors.purple,
 }) {
   return InkWell(
     onTap: () {
       Navigator.pushNamed(context, routeName);
     },
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        if (prefixText != null) Text(prefixText),
         Text(
-          goToText,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          actionText,
+          style: TextStyle(
+            color: actionColor,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         const Icon(Icons.arrow_forward),
       ],
@@ -62,6 +78,7 @@ Widget goToPage({
   );
 }
 
+//Custom Display Card - income, expense cards
 Widget displayCard({
   required BuildContext context,
   required String title,
@@ -107,13 +124,19 @@ Widget displayCard({
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const Spacer(),
-          goToPage(context: context, goToText: goToText, routeName: appRoute),
+          goToPage(
+            context: context,
+            actionText: goToText,
+            routeName: appRoute,
+            actionColor: Colors.black,
+          ),
         ],
       ),
     ),
   );
 }
 
+//Custom InputField & SizedBox
 Widget inputField({
   required TextEditingController controller,
   required String hintText,
@@ -144,3 +167,89 @@ Widget inputField({
   );
 }
 
+//Custom Transaction Button
+Widget transact({
+  required BuildContext context,
+  required String label,
+  required String type, //income or expense
+  required TextEditingController amtController,
+  required String? category,
+  TextEditingController? noteController,
+}) {
+  return ElevatedButton(
+    child: Text(label),
+    onPressed: () async {
+      final amtText = amtController.text.trim();
+
+      if (amtText.isEmpty || category == null) {
+        ToastifyFlutter.error(
+          context,
+          message: "Please fill all required fields",
+          duration: 5,
+          position: ToastPosition.top,
+          style: ToastStyle.flatColored,
+        );
+        return;
+      }
+      final amt = int.tryParse(amtText);
+      if (amt == null || amt < 0) {
+        ToastifyFlutter.error(
+          context,
+          message: "Enter a valid amount",
+          duration: 5,
+          position: ToastPosition.top,
+          style: ToastStyle.flatColored,
+        );
+        return;
+      }
+
+      try {
+        await addTransaction(
+          type: type,
+          amt: amt,
+          category: category,
+          note: noteController?.text.trim() ?? "",
+        );
+
+        ToastifyFlutter.success(
+          context,
+          message: "${type} added successfully",
+          duration: 5,
+          position: ToastPosition.top,
+          style: ToastStyle.flatColored,
+        );
+
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.home,
+          (route) => false,
+        );
+      } catch (e) {
+        ToastifyFlutter.error(
+          context,
+          message: e.toString(),
+          duration: 5,
+          position: ToastPosition.top,
+          style: ToastStyle.flatColored,
+        );
+      }
+    },
+  );
+}
+
+//Custom Dropdown
+Widget categories({
+  required String? selectedCategory,
+  required List<String> categories,
+  required ValueChanged<String?> onChanged,
+}) {
+  return DropdownButton<String>(
+    hint: Text("Select Category"),
+    value: selectedCategory,
+    isExpanded: true,
+    onChanged: onChanged,
+    items: categories.map((String c) {
+      return DropdownMenuItem<String>(value: c, child: Text(c));
+    }).toList(),
+  );
+}

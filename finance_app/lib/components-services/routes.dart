@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 // Import screens
-import 'LoginSignUp/login.dart';
-import 'Home/homepage.dart';
-import 'LoginSignUp/signup.dart';
-import 'Transactions/addInc.dart';
-import 'Transactions/addExp.dart';
+import '../screens/login.dart';
+import '../screens/homepage.dart';
+import '../screens/signup.dart';
+import '../screens/addInc.dart';
+import '../screens/addExp.dart';
 
 class AppRoutes {
   // Route names
