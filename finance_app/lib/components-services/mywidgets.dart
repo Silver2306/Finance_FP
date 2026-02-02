@@ -1,23 +1,29 @@
 import 'package:finance_app/components-services/routes.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toastify_flutter/toastify_flutter.dart';
 import 'firebase_services.dart';
 
 //Custom Header Widget
-Widget header(String htext, String subtext, double fsize,Color? backgroundColor) {
+Widget header(
+  String htext,
+  String subtext,
+  double fsize,
+  Color? backgroundColor,
+) {
   return Container(
-    width:double.infinity,
+    width: double.infinity,
     padding: EdgeInsets.all(16),
-  color: backgroundColor,
-  child:Column(
-    children: [
-      Text(
-        htext,
-        style: TextStyle(fontSize: fsize, fontWeight: FontWeight.bold),
-      ),
-      Text(subtext),
-    ],
-  ),
+    color: backgroundColor,
+    child: Column(
+      children: [
+        Text(
+          htext,
+          style: TextStyle(fontSize: fsize, fontWeight: FontWeight.bold),
+        ),
+        Text(subtext),
+      ],
+    ),
   );
 }
 
@@ -88,10 +94,12 @@ Widget displayCard({
   required BuildContext context,
   required String title,
   required String amount,
-  required String goToText,
-  required String appRoute,
+  //required String goToText,
+  //required String appRoute,
+  required double height,
+  required double width,
   Color backgroundColor = const Color(0xFFFDE7D3),
-  IconData icon = Icons.trending_up,
+  //IconData icon = Icons.trending_up,
 }) {
   return Card(
     elevation: 2,
@@ -99,42 +107,126 @@ Widget displayCard({
       borderRadius: BorderRadiusGeometry.circular(16),
     ),
     child: Container(
-      height: 160,
-      width: 190,
+      height: height,
+      width: width,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(16),  
+        gradient: LinearGradient(
+          colors: [Colors.purple, Colors.purple.withOpacity(0.2)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
-        crossAxisAlignment: .start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Icon(icon),
-            ],
+          Text(
+            title,
+            style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
           ),
+          //Icon(icon),
           SizedBox(height: 12),
           Text(
             amount,
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
           ),
-          const Spacer(),
-          goToPage(
-            context: context,
-            actionText: goToText,
-            routeName: appRoute,
-            actionColor: Colors.black,
+          SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical:12,horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: Colors.white30,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Icon(
+                          CupertinoIcons.arrow_up,
+                          size: 12,
+                          color: Colors.greenAccent,
+                        ),
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          "Expense",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+            
+                        Text(
+                          "Rs.800",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                Row(
+                  children: [
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: Colors.white30,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: Icon(
+                          CupertinoIcons.arrow_down,
+                          size: 12,
+                          color: Colors.redAccent,
+                        ),
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          "Income",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+            
+                        Text(
+                          "Rs.2500",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
+          //goToPage(
+          //context: context,
+          //actionText: goToText,
+          //routeName: appRoute,
+          //actionColor: Colors.black,
+          //),
         ],
       ),
     ),
