@@ -4,8 +4,12 @@ import 'package:toastify_flutter/toastify_flutter.dart';
 import 'firebase_services.dart';
 
 //Custom Header Widget
-Widget header(String htext, String subtext, double fsize) {
-  return Column(
+Widget header(String htext, String subtext, double fsize,Color? backgroundColor) {
+  return Container(
+    width:double.infinity,
+    padding: EdgeInsets.all(16),
+  color: backgroundColor,
+  child:Column(
     children: [
       Text(
         htext,
@@ -13,6 +17,7 @@ Widget header(String htext, String subtext, double fsize) {
       ),
       Text(subtext),
     ],
+  ),
   );
 }
 
@@ -94,12 +99,12 @@ Widget displayCard({
       borderRadius: BorderRadiusGeometry.circular(16),
     ),
     child: Container(
-      height: 150,
+      height: 160,
       width: 190,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16),  
       ),
       child: Column(
         crossAxisAlignment: .start,

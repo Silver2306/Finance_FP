@@ -2,7 +2,6 @@ import 'package:finance_app/components-services/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../components-services/mywidgets.dart';
-
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
@@ -22,14 +21,15 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Dashboard")),
       body: Column(
           mainAxisAlignment: .start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            header("Budgii", "Dashboard", 20,Colors.purple.withOpacity(0.3)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -50,6 +50,16 @@ class _HomepageState extends State<Homepage> {
                   appRoute: AppRoutes.addexp,
                   backgroundColor: const Color.fromARGB(255, 117, 147, 216),
                   icon: Icons.arrow_downward,
+                ),
+                displayCard(
+
+                  context: context,
+                  title: "Budget",
+                  amount: "₹25,000",
+                  goToText: "Add Income",
+                  appRoute: AppRoutes.addinc,
+                  backgroundColor: const Color.fromARGB(255, 241, 142, 223),
+                  icon: Icons.arrow_upward,
                 ),
               ],
             ),

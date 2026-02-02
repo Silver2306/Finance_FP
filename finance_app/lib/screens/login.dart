@@ -65,7 +65,7 @@ class _LoginState extends State<Login> {
           mainAxisAlignment: .center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            header("Welcome Back", "Enter your details to login", 40),
+            header("Welcome Back", "Enter your details to login", 40,Colors.transparent),
             SizedBox(height: 10),
             inputField(
               controller: email,

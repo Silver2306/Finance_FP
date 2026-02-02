@@ -75,7 +75,7 @@ class _SignUpState extends State<SignUp> {
           mainAxisAlignment: .center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            header("Start Your Journey", "Create your account", 40),
+            header("Start Your Journey", "Create your account", 40,Colors.transparent),
             SizedBox(height: 10),
             inputField(
               controller: email,
