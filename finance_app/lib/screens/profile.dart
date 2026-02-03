@@ -1,6 +1,3 @@
-import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
-
-import 'package:finance_app/components-services/firebase_services.dart';
 import 'package:finance_app/components-services/mywidgets.dart';
 import 'package:finance_app/components-services/routes.dart';
 import 'package:flutter/material.dart';
