@@ -1,7 +1,9 @@
+import 'package:finance_app/components-services/firebase_services.dart';
 import 'package:finance_app/components-services/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:toastify_flutter/toastify_flutter.dart';
 import '../components-services/mywidgets.dart';
 
 class Homepage extends StatefulWidget {
@@ -21,6 +23,21 @@ class _HomepageState extends State<Homepage> {
       AppRoutes.login,
       (route) => false,
     );
+  }
+
+  Future<Map<String, double>>? dashboardFuture;
+
+  @override
+  void initState() {
+    super.initState();
+
+    dashboardFuture = fetchDashboardData();
+  }
+
+  void refreshDashboard() {
+    setState(() {
+      dashboardFuture = fetchDashboardData();
+    });
   }
 
   @override
@@ -75,36 +92,63 @@ class _HomepageState extends State<Homepage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              displayCard(
-                context: context,
-                title: "Budget",
-                amount: "₹25,000",
-                //goToText: "Add Income",
-                //appRoute: AppRoutes.addinc,
-                backgroundColor: const Color.fromARGB(255, 241, 142, 223),
-                //icon: Icons.arrow_upward,
-                height: MediaQuery.of(context).size.width / 2 + 20,
-                width: MediaQuery.of(context).size.width - 20,
-              ),
-              //displayCard(
-              //context: context,
-              //title: "Expense",
-              //amount: "₹5,000",
-              //goToText: "Add Expense",
-              //appRoute: AppRoutes.addexp,
-              //backgroundColor: const Color.fromARGB(255, 117, 147, 216),
-              //icon: Icons.arrow_downward,
-              //),
-              // displayCard(
+              RefreshIndicator(
+                onRefresh: () async => refreshDashboard(),
+                child: FutureBuilder<Map<String, double>>(
+                  future: dashboardFuture,
+                  builder:
+                      (
+                        BuildContext context,
+                        AsyncSnapshot<Map<String, double>> snapshot,
+                      ) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
 
-              //context: context,
-              //title: "Budget",
-              //amount: "₹25,000",
-              //goToText: "Add Income",
-              //appRoute: AppRoutes.addinc,
-              //backgroundColor: const Color.fromARGB(255, 241, 142, 223),
-              //icon: Icons.arrow_upward,
-              // ),
+                        if (snapshot.hasError) {
+                          ToastifyFlutter.error(
+                            context,
+                            message: snapshot.error.toString(),
+                            position: ToastPosition.top,
+                            style: ToastStyle.flat,
+                          );
+                          return Center(child: Text(snapshot.error.toString()));
+                        }
+
+                        final data = snapshot.data;
+                        if (data == null) {
+                          return const Center(child: Text("No data available"));
+                        }
+
+                        final budget = data["budget"] ?? 0.0;
+                        final income = data["income"] ?? 0.0;
+                        final expense = data["expense"] ?? 0.0;
+                        final balance = budget - expense;
+
+                        return displayCard(
+                          context: context,
+                          title: "Budget",
+                          amount: "₹${budget.toStringAsFixed(2)}",
+                          //goToText: "Add Income",
+                          //appRoute: AppRoutes.addinc,
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            241,
+                            142,
+                            223,
+                          ),
+                          //icon: Icons.arrow_upward,
+                          height: MediaQuery.of(context).size.width / 2 + 20,
+                          width: MediaQuery.of(context).size.width - 20,
+                          inctotal: income,
+                          exptotal: expense,
+                        );
+                      },
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 40),
@@ -133,7 +177,8 @@ class _HomepageState extends State<Homepage> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+
+          //const SizedBox(height: 5),
 
           //List view of all transactions
           Expanded(
@@ -157,47 +202,47 @@ class _HomepageState extends State<Homepage> {
                               Container(
                                 width: 50,
                                 height: 50,
-                                decoration: BoxDecoration(
-                                  color: Colors.yellow,
-                                  shape: BoxShape.circle,
-                                ),
+                                child: Icon(Icons.currency_rupee_outlined),
+                                // decoration: BoxDecoration(
+                                //   color: Colors.yellow,
+                                //   shape: BoxShape.circle,
+                                // ),
                               ),
                               SizedBox(width: 12),
                               Text(
                                 "Food",
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: Theme.of(context).colorScheme.onBackground,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onBackground,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              
                             ],
                           ),
                           Column(
-                                children: [
-                                  Text(
-                                    "- RS.800",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.onBackground,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Today",
-                                    style: TextStyle( 
-                                      fontSize: 14,
-                                      color: Theme.of(
-                                        context,
-                                      ).colorScheme.outline,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ],
+                            children: [
+                              Text(
+                                "- RS.800",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onBackground,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
+                              Text(
+                                "Today",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Theme.of(context).colorScheme.outline,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -209,6 +254,18 @@ class _HomepageState extends State<Homepage> {
 
           //appButton(context: context, label: 'Signout', routeName: AppRoutes.login)
           ElevatedButton(onPressed: (() => signOut()), child: Text("Sign Out")),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.addinc);
+            },
+            child: Text("Add Income"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.addexp);
+            },
+            child: Text("Add Expense"),
+          ),
         ],
       ),
     );

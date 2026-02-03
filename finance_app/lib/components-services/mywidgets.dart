@@ -94,6 +94,8 @@ Widget displayCard({
   required BuildContext context,
   required String title,
   required String amount,
+  required double inctotal,
+  required double exptotal,
   //required String goToText,
   //required String appRoute,
   required double height,
@@ -133,7 +135,7 @@ Widget displayCard({
           ),
           SizedBox(height: 12),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical:12,horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -164,9 +166,9 @@ Widget displayCard({
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-            
+
                         Text(
-                          "Rs.800",
+                          "₹${exptotal.toStringAsFixed(2)}",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.white,
@@ -205,9 +207,9 @@ Widget displayCard({
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-            
+
                         Text(
-                          "Rs.2500",
+                          "₹${inctotal.toStringAsFixed(2)}",
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.white,
