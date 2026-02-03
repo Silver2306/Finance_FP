@@ -68,7 +68,7 @@ Future<Map<String, double>> fetchDashboardData() async {
   final startMs = firstDayOfMonth.millisecondsSinceEpoch;
   final endMs = firstDayOfNextMonth.millisecondsSinceEpoch - 1; // inclusive
 
-  // ── Monthly income & expense ───────────────────────────────────────
+  // ── Monthly income & expense 
   double monthlyIncome = 0.0;
   double monthlyExpense = 0.0;
 

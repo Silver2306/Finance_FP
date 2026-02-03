@@ -150,9 +150,9 @@ Widget displayCard({
                       ),
                       child: Center(
                         child: Icon(
-                          CupertinoIcons.arrow_up,
+                          CupertinoIcons.arrow_down,
                           size: 12,
-                          color: Colors.greenAccent,
+                          color: Colors.redAccent,
                         ),
                       ),
                     ),
@@ -191,9 +191,9 @@ Widget displayCard({
                       ),
                       child: Center(
                         child: Icon(
-                          CupertinoIcons.arrow_down,
+                          CupertinoIcons.arrow_up,
                           size: 12,
-                          color: Colors.redAccent,
+                          color: Colors.greenAccent,
                         ),
                       ),
                     ),
