@@ -8,6 +8,8 @@ import '../screens/addInc.dart';
 import '../screens/addExp.dart';
 import '../screens/addpage.dart';
 import '../screens/profile.dart';
+import '../screens/transactionpage.dart';
+
 
 
 class AppRoutes {
@@ -19,8 +21,7 @@ class AppRoutes {
   static const String addexp = '/addExp';
   static const String addpage = '/addpage';
   static const String profile = '/profile';
-
-
+  static const String transaction = '/transaction';
 
   // Route map
   static Map<String, WidgetBuilder> routes = {
@@ -31,5 +32,6 @@ class AppRoutes {
     addexp: (context) => const Addexp(),
     addpage: (context) => const Addpage(),
     profile: (context) => const Profile(),
+    transaction: (context) => const Transactions(),
   };
 }

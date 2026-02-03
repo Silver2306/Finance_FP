@@ -17,7 +17,7 @@ class _AddincState extends State<Addinc> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Add Income")),
+      //appBar: AppBar(title: Text("Add Income")),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(

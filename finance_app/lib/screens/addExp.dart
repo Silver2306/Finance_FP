@@ -24,7 +24,7 @@ class _AddexpState extends State<Addexp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Add Expense")),
+      //appBar: AppBar(title: Text("Add Expense")),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(

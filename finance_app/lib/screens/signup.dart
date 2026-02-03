@@ -1,4 +1,6 @@
+import 'package:finance_app/components-services/firebase_services.dart';
 import 'package:finance_app/components-services/mywidgets.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toastify_flutter/toastify_flutter.dart';
@@ -15,6 +17,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
+  TextEditingController name = TextEditingController();
 
   bool isValidEmail(String email) {
     final emailRegex = RegExp(
@@ -23,8 +26,13 @@ class _SignUpState extends State<SignUp> {
     return emailRegex.hasMatch(email);
   }
 
-  Future<void> signIn() async {
-    // Email validation
+  bool isValidName(String name) {
+    final nameRegex = RegExp(r'^[a-zA-Z]+\s+[a-zA-Z]+$');
+    return nameRegex.hasMatch(name);
+  }
+
+  //Pushing data into firebase
+  Future<void> signUp() async {
     if (!isValidEmail(email.text.trim())) {
       ToastifyFlutter.error(
         context,
@@ -35,17 +43,51 @@ class _SignUpState extends State<SignUp> {
       );
       return; // stop execution
     }
-  }
 
-  //Pushing data into firebase
-  Future<void> signUp() async {
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email.text.trim(),
-        password: password.text.trim(),
+    if (!isValidName(name.text.trim())) {
+      ToastifyFlutter.error(
+        context,
+        message: "Pleaase enter a valid name",
+        duration: 5,
+        position: ToastPosition.top,
+        style: ToastStyle.flat,
       );
+      return;
+    }
 
-      Navigator.pushReplacementNamed(context, AppRoutes.home);
+    try {
+      final userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: email.text.trim(),
+            password: password.text.trim(),
+          );
+
+      final user = userCredential.user;
+      if (user == null) {
+        throw Exception("User creation failed");
+      }
+
+      await db.ref("users/${user.uid}").set({
+        "name": name.text.trim(),
+        "email": email.text.trim(),
+        "createdAt": ServerValue.timestamp,
+      });
+
+      await user.updateDisplayName(name.text.trim());
+
+      if (context.mounted) {
+        ToastifyFlutter.success(
+          context,
+          message: "Account created successfully!",
+          position: ToastPosition.top,
+        );
+
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.home,
+          (route) => false,
+        );
+      }
     } on FirebaseAuthException catch (e) {
       String message = "Something went wrong";
 
@@ -53,6 +95,8 @@ class _SignUpState extends State<SignUp> {
         message = "Email already registered";
       } else if (e.code == 'weak-password') {
         message = "Password is too weak";
+      } else if (e.code == 'User creation failed') {
+        message = "User creation failed, Please try again!";
       }
       ToastifyFlutter.error(
         context,
@@ -75,12 +119,22 @@ class _SignUpState extends State<SignUp> {
           mainAxisAlignment: .center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            header("Start Your Journey", "Create your account", 40,Colors.transparent),
-            SizedBox(height: 10),
+            header(
+              "Start Your Journey",
+              "Create your account",
+              35,
+              Colors.transparent,
+            ),
+            SizedBox(height: 5),
+            inputField(
+              controller: name,
+              hintText: "Name: ",
+              prefixIcon: Icons.person,
+            ),
             inputField(
               controller: email,
               hintText: "Email ",
-              prefixIcon: Icons.person,
+              prefixIcon: Icons.email_outlined,
             ),
             inputField(
               controller: password,

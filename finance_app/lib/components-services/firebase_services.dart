@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 
 final db = FirebaseDatabase.instanceFor(
   app: Firebase.app(),
@@ -68,7 +69,7 @@ Future<Map<String, double>> fetchDashboardData() async {
   final startMs = firstDayOfMonth.millisecondsSinceEpoch;
   final endMs = firstDayOfNextMonth.millisecondsSinceEpoch - 1; // inclusive
 
-  // ── Monthly income & expense 
+  // ── Monthly income & expense
   double monthlyIncome = 0.0;
   double monthlyExpense = 0.0;
 
@@ -113,20 +114,78 @@ Future<Map<String, double>> fetchDashboardData() async {
   return {"budget": budget, "income": monthlyIncome, "expense": monthlyExpense};
 }
 
-// Future<List<Map<String, dynamic>>> fetchData() async {
-//   final uid = FirebaseAuth.instance.currentUser!.uid;
+typedef TransactionSummary = ({
+  String key,
+  String category,
+  double amount,
+  String type, // "expense" or "income"
+  DateTime date,
+  String? note,
+});
 
-//   final refer = db.ref("users/${uid}/transactions");
+Future<List<TransactionSummary>> getTransaction({int limit = 5}) async {
+  final user = FirebaseAuth.instance.currentUser;
 
-//   final DataSnapshot snapshot = await refer.get();
+  if (user == null) {
+    debugPrint("No user");
+    return [];
+  }
 
-//   if (!snapshot.exists || snapshot.value == null) {
-//     return [];
-//   }
+  final userId = user.uid;
+  final path = 'users/$userId/transactions';
 
-//   final Map<String, dynamic> data = Map<String, dynamic>.from(
-//     snapshot.value as Map,
-//   );
+  try {
+    final ref = db.ref().child(path);
 
-//   return data.values.map((e) => Map<String, dynamic>.from(e)).toList();
-// }
+    final snapshot = await ref.get();
+
+    if (!snapshot.exists || snapshot.value == null) {
+      return [];
+    }
+
+    final dataMap = snapshot.value as Map<dynamic, dynamic>;
+
+    List<TransactionSummary> transactions = [];
+
+    dataMap.forEach((key, value) {
+      final txMap = value as Map<dynamic, dynamic>;
+
+      final amount = (txMap['amount'] as num?)?.toDouble() ?? 0.0;
+      final timestampMs = txMap['timestamp'] as num?;
+
+      final date = timestampMs != null
+          ? DateTime.fromMillisecondsSinceEpoch(timestampMs.toInt())
+          : DateTime.now();
+
+      final typeRaw = txMap['type'] as String? ?? 'expense';
+      final type = typeRaw.toLowerCase();
+
+      transactions.add((
+        key: key as String,
+        category: (txMap['category'] as String?)?.trim() ?? 'Other',
+        amount: amount,
+        type: type, // "expense" or "income"
+        date: date,
+        note: txMap['note'] as String?,
+      ));
+    });
+    transactions.sort((a, b) => b.date.compareTo(a.date));
+
+    return transactions;
+  } catch (e, stack) {
+    debugPrint('Error fetching transactions: $e\n$stack');
+    return [];
+  }
+}
+
+Future<void> setBudget({required TextEditingController amt}) async {
+  final user = FirebaseAuth.instance.currentUser;
+
+  if (user == null) {
+    throw Exception("User not logged in");
+  }
+
+  final ref = db.ref("users/${user.uid}").push();
+
+  await ref.update({'budget': amt});
+}

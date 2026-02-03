@@ -1,12 +1,13 @@
 import 'package:finance_app/components-services/firebase_services.dart';
+import 'package:finance_app/components-services/recentTransactions.dart';
 import 'package:finance_app/components-services/routes.dart';
+import 'package:finance_app/screens/transactionpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toastify_flutter/toastify_flutter.dart';
 import '../components-services/mywidgets.dart';
 import '../screens/stats/statspage.dart';
-import '../screens/addpage.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -50,7 +51,9 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple.withOpacity(0.2), // or whatever color you like
+        backgroundColor: Colors.purple.withOpacity(
+          0.2,
+        ), // or whatever color you like
         elevation: 0,
         title: Text(
           "Hello, ${user?.displayName ?? 'User'}", // Firebase name
@@ -128,10 +131,10 @@ class _HomepageState extends State<Homepage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              //  header(
+                //  header(
                 //  "Budgii",
-                  //"Dashboard",
-                  //20,
+                //"Dashboard",
+                //20,
                 //  Colors.purple.withOpacity(0.3),
                 //),
                 Row(
@@ -215,7 +218,14 @@ class _HomepageState extends State<Homepage> {
                     ),
                     //on tap of view all it will show a list of transactions
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Transactions(),
+                          ),
+                        );
+                      },
                       child: Text(
                         "View All",
                         style: TextStyle(
@@ -227,102 +237,102 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ],
                 ),
-
+                RecentTransactions(limit: 3),
                 //const SizedBox(height: 5),
 
                 //List view of all transactions
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      width: 50,
-                                      height: 50,
-                                      child: Icon(
-                                        Icons.currency_rupee_outlined,
-                                      ),
-                                      // decoration: BoxDecoration(
-                                      //   color: Colors.yellow,
-                                      //   shape: BoxShape.circle,
-                                      // ),
-                                    ),
-                                    SizedBox(width: 12),
-                                    Text(
-                                      "Food",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onBackground,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      "- RS.800",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onBackground,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      "Today",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.outline,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                // Expanded(
+                //   child: ListView.builder(
+                //     itemCount: 3,
+                //     itemBuilder: (context, index) {
+                //       return Padding(
+                //         padding: const EdgeInsets.only(bottom: 16.0),
+                //         child: Container(
+                //           decoration: BoxDecoration(
+                //             color: Colors.white,
+                //             borderRadius: BorderRadius.circular(12),
+                //           ),
+                //           child: Padding(
+                //             padding: const EdgeInsets.all(16.0),
+                //             child: Row(
+                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //               children: [
+                //                 Row(
+                //                   children: [
+                //                     Container(
+                //                       width: 50,
+                //                       height: 50,
+                //                       child: Icon(
+                //                         Icons.currency_rupee_outlined,
+                //                       ),
+                //                       // decoration: BoxDecoration(
+                //                       //   color: Colors.yellow,
+                //                       //   shape: BoxShape.circle,
+                //                       // ),
+                //                     ),
+                //                     SizedBox(width: 12),
+                //                     Text(
+                //                       "Food",
+                //                       style: TextStyle(
+                //                         fontSize: 14,
+                //                         color: Theme.of(
+                //                           context,
+                //                         ).colorScheme.onBackground,
+                //                         fontWeight: FontWeight.w500,
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 ),
+                //                 Column(
+                //                   children: [
+                //                     Text(
+                //                       "- RS.800",
+                //                       style: TextStyle(
+                //                         fontSize: 14,
+                //                         color: Theme.of(
+                //                           context,
+                //                         ).colorScheme.onBackground,
+                //                         fontWeight: FontWeight.w400,
+                //                       ),
+                //                     ),
+                //                     Text(
+                //                       "Today",
+                //                       style: TextStyle(
+                //                         fontSize: 14,
+                //                         color: Theme.of(
+                //                           context,
+                //                         ).colorScheme.outline,
+                //                         fontWeight: FontWeight.w400,
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 ),
+                //               ],
+                //             ),
+                //           ),
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // ),
 
                 //appButton(context: context, label: 'Signout', routeName: AppRoutes.login)
-                ElevatedButton(
-                  onPressed: (() => signOut()),
-                  child: Text("Sign Out"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.addinc);
-                  },
-                  child: Text("Add Income"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.addexp);
-                  },
-                  child: Text("Add Expense"),
-                ),
+                // ElevatedButton(
+                //   onPressed: (() => signOut()),
+                //   child: Text("Sign Out"),
+                // ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, AppRoutes.addinc);
+                //   },
+                //   child: Text("Add Income"),
+                // ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, AppRoutes.addexp);
+                //   },
+                //   child: Text("Add Expense"),
+                // ),
               ],
             )
           : Statspage(),
