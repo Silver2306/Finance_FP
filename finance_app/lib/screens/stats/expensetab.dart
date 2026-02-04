@@ -1,3 +1,4 @@
+import 'package:finance_app/screens/stats/stattile.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -10,14 +11,14 @@ class ExpenseTab extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       child: Column(
         children: [
-
           // 🔼 EXPENSE BAR CHART
           AspectRatio(
             aspectRatio: 1.7,
             child: Card(
               color: const Color(0xff2c4260),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8)),
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: BarChart(
@@ -32,26 +33,40 @@ class ExpenseTab extends StatelessWidget {
                           getTitlesWidget: (value, meta) {
                             switch (value.toInt()) {
                               case 0:
-                                return const Text('Mn',
-                                    style: TextStyle(color: Colors.white));
+                                return const Text(
+                                  'Mn',
+                                  style: TextStyle(color: Colors.white),
+                                );
                               case 1:
-                                return const Text('Te',
-                                    style: TextStyle(color: Colors.white));
+                                return const Text(
+                                  'Te',
+                                  style: TextStyle(color: Colors.white),
+                                );
                               case 2:
-                                return const Text('Wd',
-                                    style: TextStyle(color: Colors.white));
+                                return const Text(
+                                  'Wd',
+                                  style: TextStyle(color: Colors.white),
+                                );
                               case 3:
-                                return const Text('Tu',
-                                    style: TextStyle(color: Colors.white));
+                                return const Text(
+                                  'Tu',
+                                  style: TextStyle(color: Colors.white),
+                                );
                               case 4:
-                                return const Text('Fr',
-                                    style: TextStyle(color: Colors.white));
+                                return const Text(
+                                  'Fr',
+                                  style: TextStyle(color: Colors.white),
+                                );
                               case 5:
-                                return const Text('St',
-                                    style: TextStyle(color: Colors.white));
+                                return const Text(
+                                  'St',
+                                  style: TextStyle(color: Colors.white),
+                                );
                               case 6:
-                                return const Text('Sn',
-                                    style: TextStyle(color: Colors.white));
+                                return const Text(
+                                  'Sn',
+                                  style: TextStyle(color: Colors.white),
+                                );
                               default:
                                 return const Text('');
                             }
@@ -99,40 +114,41 @@ class ExpenseTab extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          // 🔽 EXPENSE LIST BELOW CHART
-          Expanded(
-            child: ListView(
-              children: const [
-                ListTile(
-                  leading: Icon(Icons.arrow_downward, color: Colors.red),
-                  title: Text('Groceries'),
-                  trailing: Text(
-                    '₹4000',
-                    style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(Icons.arrow_downward, color: Colors.red),
-                  title: Text('Rent'),
-                  trailing: Text(
-                    '₹6000',
-                    style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(Icons.arrow_downward, color: Colors.red),
-                  title: Text('Transport'),
-                  trailing: Text(
-                    '₹3000',
-                    style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // // 🔽 EXPENSE LIST BELOW CHART
+          // Expanded(
+          //   child: ListView(
+          //     children: const [
+          //       ListTile(
+          //         leading: Icon(Icons.arrow_downward, color: Colors.red),
+          //         title: Text('Groceries'),
+          //         trailing: Text(
+          //           '₹4000',
+          //           style: TextStyle(
+          //               color: Colors.red, fontWeight: FontWeight.bold),
+          //         ),
+          //       ),
+          //       ListTile(
+          //         leading: Icon(Icons.arrow_downward, color: Colors.red),
+          //         title: Text('Rent'),
+          //         trailing: Text(
+          //           '₹6000',
+          //           style: TextStyle(
+          //               color: Colors.red, fontWeight: FontWeight.bold),
+          //         ),
+          //       ),
+          //       ListTile(
+          //         leading: Icon(Icons.arrow_downward, color: Colors.red),
+          //         title: Text('Transport'),
+          //         trailing: Text(
+          //           '₹3000',
+          //           style: TextStyle(
+          //               color: Colors.red, fontWeight: FontWeight.bold),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          expenseTile(),
         ],
       ),
     );

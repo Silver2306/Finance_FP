@@ -123,6 +123,14 @@ typedef TransactionSummary = ({
   String? note,
 });
 
+typedef Stats = ({
+  String key,
+  String category,
+  double amount,
+  String type, // "expense" or "income"
+  DateTime date,
+});
+
 Future<List<TransactionSummary>> getTransaction({int limit = 5}) async {
   final user = FirebaseAuth.instance.currentUser;
 
@@ -184,8 +192,45 @@ Future<void> setBudget({required TextEditingController amt}) async {
   if (user == null) {
     throw Exception("User not logged in");
   }
+  final String text = amt.text.trim();
+  if (text.isEmpty) {
+    throw Exception("Please enter a budget amount");
+  }
 
-  final ref = db.ref("users/${user.uid}").push();
+  final double? amount = double.tryParse(text);
+  if (amount == null || amount < 0) {
+    throw Exception("Please enter a valid positive number");
+  }
 
-  await ref.update({'budget': amt});
+  final ref = db.ref("users/${user.uid}/budget");
+
+  await ref.set(amount);
+}
+
+Future<Map<String, double>> getIncome({int limit = 10}) async {
+  final transactionStats = await getTransaction(limit: limit);
+  final incomeStats = <String, double>{};
+
+  for (final t in transactionStats) {
+    if (t.type == 'income') {
+      final cat = t.category;
+      incomeStats[cat] = (incomeStats[cat] ?? 0) + t.amount;
+    }
+  }
+
+  return incomeStats;
+}
+
+Future<Map<String, double>> getExpense({int limit = 10}) async {
+  final transactionStats = await getTransaction(limit: limit);
+  final expenseStats = <String, double>{};
+
+  for (final t in transactionStats) {
+    if (t.type == 'expense') {
+      final cat = t.category;
+      expenseStats[cat] = (expenseStats[cat] ?? 0) + t.amount;
+    }
+  }
+
+  return expenseStats;
 }

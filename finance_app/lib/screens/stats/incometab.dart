@@ -1,5 +1,7 @@
+import 'package:finance_app/components-services/firebase_services.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'stattile.dart';
 
 class IncomeTab extends StatelessWidget {
   const IncomeTab({super.key});
@@ -110,45 +112,46 @@ class IncomeTab extends StatelessWidget {
         const SizedBox(height: 16),
 
           // 🔽 LIST BELOW CHART
-          Expanded(
-            child: ListView(
-              children: const [
-                ListTile(
-                  leading:
-                      Icon(Icons.arrow_upward, color: Colors.green),
-                  title: Text('Salary'),
-                  trailing: Text(
-                    '₹5000',
-                    style: TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                ListTile(
-                  leading:
-                      Icon(Icons.arrow_upward, color: Colors.green),
-                  title: Text('Freelance'),
-                  trailing: Text(
-                    '₹2000',
-                    style: TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                ListTile(
-                  leading:
-                      Icon(Icons.arrow_upward, color: Colors.green),
-                  title: Text('Bonus'),
-                  trailing: Text(
-                    '₹1500',
-                    style: TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-          ),
+        //   Expanded(
+        //     child: ListView(
+        //       children: const [
+        //         ListTile(
+        //           leading:
+        //               Icon(Icons.arrow_upward, color: Colors.green),
+        //           title: Text('Salary'),
+        //           trailing: Text(
+        //             '₹5000',
+        //             style: TextStyle(
+        //                 color: Colors.green,
+        //                 fontWeight: FontWeight.bold),
+        //           ),
+        //         ),
+        //         ListTile(
+        //           leading:
+        //               Icon(Icons.arrow_upward, color: Colors.green),
+        //           title: Text('Freelance'),
+        //           trailing: Text(
+        //             '₹2000',
+        //             style: TextStyle(
+        //                 color: Colors.green,
+        //                 fontWeight: FontWeight.bold),
+        //           ),
+        //         ),
+        //         ListTile(
+        //           leading:
+        //               Icon(Icons.arrow_upward, color: Colors.green),
+        //           title: Text('Bonus'),
+        //           trailing: Text(
+        //             '₹1500',
+        //             style: TextStyle(
+        //                 color: Colors.green,
+        //                 fontWeight: FontWeight.bold),
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        incomeTile(),
         ],
       ),
     );

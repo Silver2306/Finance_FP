@@ -19,12 +19,7 @@ class Statspage extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(
-          children: [
-            IncomeTab(),
-            ExpenseTab(),
-          ],
-        ),
+        body: const TabBarView(children: [IncomeTab(), ExpenseTab()]),
       ),
     );
   }

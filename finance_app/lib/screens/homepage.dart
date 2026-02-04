@@ -62,11 +62,12 @@ class _HomepageState extends State<Homepage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.person),
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                AppRoutes.profile,
-              ); // replace with your route
+            onPressed: () async {
+              final result = Navigator.pushNamed(context, AppRoutes.profile);
+              debugPrint('$result');
+              if (result == true) {
+                refreshDashboard();
+              } // replace with your route
             },
           ),
         ],
