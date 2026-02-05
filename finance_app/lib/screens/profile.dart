@@ -45,7 +45,7 @@ class _ProfileState extends State<Profile> {
 
       if (context.mounted) {
         // Navigator.pop(context, true);
-        Navigator.pushNamed(context, AppRoutes.home);
+        Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (route)=>false);
       }
     } catch (e) {
       if (!mounted) {
