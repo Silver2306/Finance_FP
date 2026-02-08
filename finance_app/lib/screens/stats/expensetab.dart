@@ -35,7 +35,7 @@ class _ExpensetabState extends State<Expensetab> {
           AspectRatio(
             aspectRatio: 1.7,
             child: Card(
-              color: const Color(0xff2c4260),
+              color: Color.fromARGB(255, 40, 40, 40),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -135,7 +135,7 @@ class _ExpensetabState extends State<Expensetab> {
       barRods: [
         BarChartRodData(
           toY: y,
-          color: Colors.redAccent,
+          color: const Color.fromARGB(255, 253, 109, 109),
           width: 22,
           borderRadius: BorderRadius.circular(4),
         ),

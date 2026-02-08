@@ -14,7 +14,7 @@ class _BudgetTabState extends State<BudgetTab> {
   double expense = 0;
   double balance = 0;
   double expensePercent = 0;
-double balancePercent = 0;
+  double balancePercent = 0;
   bool isLoading = true;
 
   @override
@@ -24,35 +24,37 @@ double balancePercent = 0;
   }
 
   Future<void> _loadPieData() async {
-  final data = await fetchDashboardData();
+    final data = await fetchDashboardData();
 
-  final fetchedBudget = data["budget"] ?? 0.0;
-  final fetchedExpense = data["expense"] ?? 0.0;
+    final fetchedBudget = data["budget"] ?? 0.0;
+    final fetchedExpense = data["expense"] ?? 0.0;
 
-  // Always calculate balance FIRST
-  final double calculatedBalance =
-      (fetchedBudget - fetchedExpense).clamp(0, double.infinity);
+    // Always calculate balance FIRST
+    final double calculatedBalance = (fetchedBudget - fetchedExpense).clamp(
+      0,
+      double.infinity,
+    );
 
-  double expPercent = 0;
-  double balPercent = 0;
+    double expPercent = 0;
+    double balPercent = 0;
 
-  // Calculate percentages ONLY if budget > 0
-  if (fetchedBudget > 0) {
-    expPercent = (fetchedExpense / fetchedBudget) * 100;
-    balPercent = (calculatedBalance / fetchedBudget) * 100;
+    // Calculate percentages ONLY if budget > 0
+    if (fetchedBudget > 0) {
+      expPercent = (fetchedExpense / fetchedBudget) * 100;
+      balPercent = (calculatedBalance / fetchedBudget) * 100;
+    }
+
+    if (mounted) {
+      setState(() {
+        budget = fetchedBudget;
+        expense = fetchedExpense;
+        balance = calculatedBalance;
+        expensePercent = expPercent;
+        balancePercent = balPercent;
+        isLoading = false;
+      });
+    }
   }
-
-  if (mounted) {
-    setState(() {
-      budget = fetchedBudget;
-      expense = fetchedExpense;
-      balance = calculatedBalance;
-      expensePercent = expPercent;
-      balancePercent = balPercent;
-      isLoading = false;
-    });
-  }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,7 @@ double balancePercent = 0;
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xffF5F7FB),
+      backgroundColor: const Color.fromARGB(255, 250, 245, 240),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -125,22 +127,22 @@ double balancePercent = 0;
 
                 // Legend
                 Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [
-    _legendItem(
-      const Color(0xffFF6B6B),
-      "Expense",
-      expense.toStringAsFixed(0),
-      expensePercent,
-    ),
-    _legendItem(
-      const Color(0xff4ECDC4),
-      "Balance",
-      balance.toStringAsFixed(0),
-      balancePercent,
-    ),
-  ],
-),
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _legendItem(
+                      const Color(0xffFF6B6B),
+                      "Expense",
+                      expense.toStringAsFixed(0),
+                      expensePercent,
+                    ),
+                    _legendItem(
+                      const Color(0xff4ECDC4),
+                      "Balance",
+                      balance.toStringAsFixed(0),
+                      balancePercent,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -149,18 +151,14 @@ double balancePercent = 0;
     );
   }
 
-  Widget _legendItem(Color color, String label, String value,double percent) {
-    
+  Widget _legendItem(Color color, String label, String value, double percent) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           width: 12,
           height: 12,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-          ),
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         const SizedBox(width: 8),
         Column(
@@ -168,17 +166,11 @@ double balancePercent = 0;
           children: [
             Text(
               label,
-              style: const TextStyle(
-                fontSize: 13,
-                color: Colors.black54,
-              ),
+              style: const TextStyle(fontSize: 13, color: Colors.black54),
             ),
             Text(
               "₹$value  •  ${percent.toStringAsFixed(1)}%",
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             ),
           ],
         ),

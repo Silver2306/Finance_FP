@@ -45,7 +45,11 @@ class _ProfileState extends State<Profile> {
 
       if (context.mounted) {
         // Navigator.pop(context, true);
-        Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (route)=>false);
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.home,
+          (route) => false,
+        );
       }
     } catch (e) {
       if (!mounted) {
@@ -71,7 +75,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profile"),
-        backgroundColor: Colors.purple,
+        backgroundColor: Color.fromARGB(255, 200, 125, 135),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -79,7 +83,11 @@ class _ProfileState extends State<Profile> {
           children: [
             // 👤 User Info
             ListTile(
-              leading: const Icon(Icons.person, size: 40, color: Colors.purple),
+              leading: const Icon(
+                Icons.person,
+                size: 40,
+                color: Color.fromARGB(255, 200, 125, 135),
+              ),
               title: Text(
                 user?.displayName ?? 'User',
                 style: const TextStyle(
@@ -100,14 +108,14 @@ class _ProfileState extends State<Profile> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              color: Colors.purple.withOpacity(0.1),
+              color: Color.fromARGB(255, 240, 196, 203),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(
                   children: [
                     const Icon(
                       Icons.currency_rupee_rounded,
-                      color: Colors.purple,
+                      color: Colors.black54,
                       size: 28,
                     ),
                     const SizedBox(width: 12),
@@ -123,13 +131,6 @@ class _ProfileState extends State<Profile> {
                         return const Text("No budget set");
                       },
                     ),
-                    // Text(
-                    //   "Monthly Budget: ₹$budget",
-                    //   style: const TextStyle(
-                    //     fontSize: 16,
-                    //     fontWeight: FontWeight.bold,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -149,17 +150,25 @@ class _ProfileState extends State<Profile> {
               onPressed: _isLoading ? null : _updateBudget,
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
-                backgroundColor: Colors.purple.withOpacity(0.6),
+                backgroundColor: Color.fromARGB(255, 200, 125, 135),
               ),
               child: const Text(
                 "Update Budget",
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16, color: Colors.black),
               ),
             ),
-            const SizedBox(height:200),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: (() => signOut()),
-              child: Text("Sign Out"),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size.fromHeight(50),
+
+                backgroundColor: Color.fromARGB(255, 200, 125, 135),
+              ),
+              child: Text(
+                "Sign Out",
+                style: const TextStyle(fontSize: 16, color: Colors.black),
+              ),
             ),
           ],
         ),

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:finance_app/components-services/firebase_services.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -35,7 +37,7 @@ class _IncometabState extends State<Incometab> {
           AspectRatio(
             aspectRatio: 1.7,
             child: Card(
-              color: const Color(0xff2c4260),
+              color: Color.fromARGB(255, 40, 40, 40),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -70,47 +72,6 @@ class _IncometabState extends State<Incometab> {
                             }
                             return const Text('');
                           },
-                          // (value, meta) {
-                          //   switch (value.toInt()) {
-                          //     case 0:
-                          //       return const Text(
-                          //         'Mn',
-                          //         style: TextStyle(color: Colors.white),
-                          //       );
-                          //     case 1:
-                          //       return const Text(
-                          //         'Te',
-                          //         style: TextStyle(color: Colors.white),
-                          //       );
-                          //     case 2:
-                          //       return const Text(
-                          //         'Wd',
-                          //         style: TextStyle(color: Colors.white),
-                          //       );
-                          //     case 3:
-                          //       return const Text(
-                          //         'Tu',
-                          //         style: TextStyle(color: Colors.white),
-                          //       );
-                          //     case 4:
-                          //       return const Text(
-                          //         'Fr',
-                          //         style: TextStyle(color: Colors.white),
-                          //       );
-                          //     case 5:
-                          //       return const Text(
-                          //         'St',
-                          //         style: TextStyle(color: Colors.white),
-                          //       );
-                          //     case 6:
-                          //       return const Text(
-                          //         'Sn',
-                          //         style: TextStyle(color: Colors.white),
-                          //       );
-                          //     default:
-                          //       return const Text('');
-                          //   }
-                          // },
                         ),
                       ),
                       leftTitles: AxisTitles(
@@ -142,14 +103,6 @@ class _IncometabState extends State<Incometab> {
                         .entries
                         .map((e) => makeGroupData(e.key, e.value.toDouble()))
                         .toList(),
-                    //   [makeGroupData(0, 8000),
-                    //   makeGroupData(1, 1000),
-                    //   makeGroupData(2, 1400),
-                    //   makeGroupData(3, 1500),
-                    //   makeGroupData(4, 1300),
-                    //   makeGroupData(5, 1000),
-                    //   makeGroupData(6, 1600),
-                    // ],
                   ),
                 ),
               ),
@@ -181,7 +134,7 @@ class _IncometabState extends State<Incometab> {
       barRods: [
         BarChartRodData(
           toY: y,
-          color: Colors.lightBlueAccent,
+          color: Colors.green,
           width: 22,
           borderRadius: BorderRadius.circular(4),
         ),

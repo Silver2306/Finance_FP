@@ -101,10 +101,7 @@ class RecentTransactions extends StatelessWidget {
                               width: 50,
                               height: 50,
                               child: Icon(Icons.currency_rupee_outlined),
-                              // decoration: BoxDecoration(
-                              //   color: Colors.yellow,
-                              //   shape: BoxShape.circle,
-                              // ),
+                             
                             ),
                             SizedBox(width: 12),
                             Text(

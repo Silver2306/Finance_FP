@@ -58,14 +58,22 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
+      appBar: AppBar(
+        title: Text("Login"),
+        backgroundColor: Color.fromARGB(255, 200, 125, 135),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: .center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            header("Welcome Back", "Enter your details to login", 40,Colors.transparent),
+            header(
+              "Welcome Back",
+              "Enter your details to login",
+              40,
+              Colors.transparent,
+            ),
             SizedBox(height: 10),
             inputField(
               controller: email,
@@ -84,11 +92,11 @@ class _LoginState extends State<Login> {
               style: ElevatedButton.styleFrom(
                 shape: const StadiumBorder(),
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.purple.withOpacity(0.7),
+                backgroundColor: Color.fromARGB(255, 200, 125, 135),
               ),
               child: const Text(
                 "Login",
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: TextStyle(fontSize: 20, color: Colors.black),
               ),
             ),
             goToPage(

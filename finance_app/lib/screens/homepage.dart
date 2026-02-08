@@ -67,15 +67,18 @@ class _HomepageState extends State<Homepage> {
   }
 
   int index = 0;
-  Color selectedColor = Colors.purple;
-  Color unselectedColor = Colors.blueAccent;
+  Color unselectedColor = Color.fromARGB(255, 200, 125, 135);
+  Color selectedColor = Color.fromARGB(255, 81, 192, 142);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple.withOpacity(
-          0.2,
+        backgroundColor: Color.fromARGB(
+          255,
+          200,
+          125,
+          135,
         ), // or whatever color you like
         elevation: 0,
         title: Text(
@@ -141,12 +144,15 @@ class _HomepageState extends State<Homepage> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: LinearGradient(
-              colors: [Colors.purple, Colors.purple.withOpacity(0.2)],
+              colors: [
+                Color.fromARGB(255, 240, 196, 203),
+                Color.fromARGB(255, 240, 196, 203),
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
           ),
-          child: const Icon(CupertinoIcons.add),
+          child: const Icon(CupertinoIcons.add, color: Colors.black54),
         ),
       ),
 
@@ -207,9 +213,9 @@ class _HomepageState extends State<Homepage> {
                                 //appRoute: AppRoutes.addinc,
                                 backgroundColor: const Color.fromARGB(
                                   255,
-                                  241,
-                                  142,
-                                  223,
+                                  240,
+                                  196,
+                                  203,
                                 ),
                                 //icon: Icons.arrow_upward,
                                 height:
@@ -238,7 +244,21 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ),
                 ),
-                RecentTransactions(limit: 4),
+
+                Expanded(
+                  child: Scrollbar(
+                    thumbVisibility: true,
+                    interactive: true,
+                    radius: const Radius.circular(10),
+                    thickness: 5,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      physics:
+                          const BouncingScrollPhysics(), // nice feel on iOS/Android
+                      child: RecentTransactions(limit: 4),
+                    ),
+                  ),
+                ),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(

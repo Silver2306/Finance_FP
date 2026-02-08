@@ -50,11 +50,11 @@ Widget appButton({
     style: ElevatedButton.styleFrom(
       shape: const StadiumBorder(),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-      backgroundColor: Colors.purple.withOpacity(0.7),
+      backgroundColor: Color.fromARGB(255, 200, 125, 135),
     ),
     child: Text(
       label,
-      style: const TextStyle(fontSize: 20, color: Colors.white),
+      style: const TextStyle(fontSize: 20, color: Colors.black),
     ),
   );
 }
@@ -65,7 +65,7 @@ Widget goToPage({
   String? prefixText,
   required String actionText,
   required String routeName,
-  Color actionColor = Colors.purple,
+  Color actionColor = const Color.fromARGB(255, 200, 125, 135),
 }) {
   return InkWell(
     onTap: () {
@@ -114,7 +114,10 @@ Widget displayCard({
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.purple, Colors.purple.withOpacity(0.2)],
+          colors: [
+            Color.fromARGB(255, 240, 196, 203),
+            Color.fromARGB(255, 240, 196, 203),
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -125,13 +128,17 @@ Widget displayCard({
         children: [
           Text(
             title,
-            style: TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
+            style: TextStyle(
+              fontStyle: FontStyle.normal,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           //Icon(icon),
-          SizedBox(height: 12),
+          SizedBox(height: 5),
           Text(
             amount,
-            style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 12),
           Padding(
@@ -142,27 +149,28 @@ Widget displayCard({
                 Row(
                   children: [
                     Container(
-                      width: 20,
-                      height: 20,
+                      width: 30,
+                      height: 30,
                       decoration: BoxDecoration(
-                        color: Colors.white30,
+                        color: Colors.white24,
                         shape: BoxShape.circle,
                       ),
                       child: Center(
                         child: Icon(
                           CupertinoIcons.arrow_down,
-                          size: 12,
+                          size: 15,
                           color: Colors.redAccent,
                         ),
                       ),
                     ),
+                    const SizedBox(width: 5),
                     Column(
                       children: [
                         Text(
                           "Expense",
                           style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
+                            fontSize: 15,
+                            color: Colors.black,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -170,8 +178,8 @@ Widget displayCard({
                         Text(
                           "₹${exptotal.toStringAsFixed(2)}",
                           style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
+                            fontSize: 15,
+                            color: Colors.black,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -183,27 +191,28 @@ Widget displayCard({
                 Row(
                   children: [
                     Container(
-                      width: 20,
-                      height: 20,
+                      width: 30,
+                      height: 30,
                       decoration: BoxDecoration(
-                        color: Colors.white30,
+                        color: Colors.white24,
                         shape: BoxShape.circle,
                       ),
                       child: Center(
                         child: Icon(
                           CupertinoIcons.arrow_up,
-                          size: 12,
-                          color: Colors.greenAccent,
+                          size: 15,
+                          color: Colors.green,
                         ),
                       ),
                     ),
+                    const SizedBox(width: 5),
                     Column(
                       children: [
                         Text(
                           "Income",
                           style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
+                            fontSize: 15,
+                            color: Colors.black,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -211,8 +220,8 @@ Widget displayCard({
                         Text(
                           "₹${inctotal.toStringAsFixed(2)}",
                           style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
+                            fontSize: 15,
+                            color: Colors.black,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -223,12 +232,6 @@ Widget displayCard({
               ],
             ),
           ),
-          //goToPage(
-          //context: context,
-          //actionText: goToText,
-          //routeName: appRoute,
-          //actionColor: Colors.black,
-          //),
         ],
       ),
     ),
@@ -256,7 +259,7 @@ Widget inputField({
             borderRadius: BorderRadius.circular(18),
             borderSide: BorderSide.none,
           ),
-          fillColor: Colors.purple.withOpacity(0.1),
+          fillColor: Color.fromARGB(255, 240, 196, 203),
           filled: true,
           prefixIcon: Icon(prefixIcon),
         ),
@@ -275,75 +278,88 @@ Widget transact({
   required String? category,
   TextEditingController? noteController,
 }) {
-  return ElevatedButton(
-    child: Text(label),
-    onPressed: () async {
-      final amtText = amtController.text.trim();
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.stretch,
+    children: [
+      ElevatedButton(
+        onPressed: () async {
+          final amtText = amtController.text.trim();
 
-      if (amtText.isEmpty || category == null) {
-        ToastifyFlutter.error(
-          context,
-          message: "Please fill all required fields",
-          duration: 5,
-          position: ToastPosition.top,
-          style: ToastStyle.flatColored,
-        );
-        return;
-      }
-      final amt = int.tryParse(amtText);
-      if (amt == null || amt < 0) {
-        ToastifyFlutter.error(
-          context,
-          message: "Enter a valid amount",
-          duration: 5,
-          position: ToastPosition.top,
-          style: ToastStyle.flatColored,
-        );
-        return;
-      }
+          if (amtText.isEmpty || category == null) {
+            ToastifyFlutter.error(
+              context,
+              message: "Please fill all required fields",
+              duration: 5,
+              position: ToastPosition.top,
+              style: ToastStyle.flatColored,
+            );
+            return;
+          }
+          final amt = int.tryParse(amtText);
+          if (amt == null || amt < 0) {
+            ToastifyFlutter.error(
+              context,
+              message: "Enter a valid amount",
+              duration: 5,
+              position: ToastPosition.top,
+              style: ToastStyle.flatColored,
+            );
+            return;
+          }
 
-      if (amt > 1000000) {
-        ToastifyFlutter.error(
-          context,
-          message: "Amount cannot exceed ₹1,000,000",
-          duration: 5,
-          position: ToastPosition.top,
-          style: ToastStyle.flatColored,
-        );
-        return;
-      }
+          if (amt > 1000000) {
+            ToastifyFlutter.error(
+              context,
+              message: "Amount cannot exceed ₹1,000,000",
+              duration: 5,
+              position: ToastPosition.top,
+              style: ToastStyle.flatColored,
+            );
+            return;
+          }
 
-      try {
-        await addTransaction(
-          type: type,
-          amt: amt,
-          category: category,
-          note: noteController?.text.trim() ?? "",
-        );
+          try {
+            await addTransaction(
+              type: type,
+              amt: amt,
+              category: category,
+              note: noteController?.text.trim() ?? "",
+            );
 
-        ToastifyFlutter.success(
-          context,
-          message: "${type} added successfully",
-          duration: 5,
-          position: ToastPosition.top,
-          style: ToastStyle.flatColored,
-        );
+            ToastifyFlutter.success(
+              context,
+              message: "${type} added successfully",
+              duration: 5,
+              position: ToastPosition.top,
+              style: ToastStyle.flatColored,
+            );
 
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoutes.home,
-          (route) => false,
-        );
-      } catch (e) {
-        ToastifyFlutter.error(
-          context,
-          message: e.toString(),
-          duration: 5,
-          position: ToastPosition.top,
-          style: ToastStyle.flatColored,
-        );
-      }
-    },
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              AppRoutes.home,
+              (route) => false,
+            );
+          } catch (e) {
+            ToastifyFlutter.error(
+              context,
+              message: e.toString(),
+              duration: 5,
+              position: ToastPosition.top,
+              style: ToastStyle.flatColored,
+            );
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          shape: const StadiumBorder(),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 32),
+          backgroundColor: Color.fromARGB(255, 200, 125, 135),
+        ),
+        child: Text(
+          label,
+          style: const TextStyle(fontSize: 20, color: Colors.black),
+        ),
+      ),
+    ],
   );
 }
 

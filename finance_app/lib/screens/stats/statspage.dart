@@ -3,7 +3,6 @@ import 'expensetab.dart';
 import 'incometab.dart';
 import 'budgettab.dart';
 
-
 class Statspage extends StatelessWidget {
   const Statspage({super.key});
 
@@ -14,7 +13,11 @@ class Statspage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Statistics"),
+          backgroundColor: const Color.fromARGB(255, 250, 245, 240),
           bottom: const TabBar(
+            labelColor: Color.fromARGB(255, 200, 125, 135),
+            unselectedLabelColor: Colors.black54,
+            indicatorColor: Color.fromARGB(255, 200, 125, 135),
             tabs: [
               Tab(text: "Income"),
               Tab(text: "Expense"),
@@ -22,7 +25,7 @@ class Statspage extends StatelessWidget {
             ],
           ),
         ),
-        body: TabBarView(children: [Incometab(), Expensetab(),BudgetTab()]),
+        body: TabBarView(children: [Incometab(), Expensetab(), BudgetTab()]),
       ),
     );
   }

@@ -112,7 +112,10 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Sign Up")),
+      appBar: AppBar(
+        title: Text("Sign Up"),
+        backgroundColor: Color.fromARGB(255, 200, 125, 135),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -154,11 +157,12 @@ class _SignUpState extends State<SignUp> {
               style: ElevatedButton.styleFrom(
                 shape: const StadiumBorder(),
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.purple.withOpacity(0.7),
+
+                backgroundColor: Color.fromARGB(255, 200, 125, 135),
               ),
               child: const Text(
                 "Sign Up",
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: TextStyle(fontSize: 20, color: Colors.black),
               ),
             ),
             goToPage(
