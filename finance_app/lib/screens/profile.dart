@@ -135,7 +135,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 30),
             inputField(
               controller: budgetController,
               hintText: "Set/Update Budget",
@@ -143,17 +143,20 @@ class _ProfileState extends State<Profile> {
               prefixIcon: Icons.currency_rupee_rounded,
             ),
 
+            const SizedBox(height: 30),
+
             ElevatedButton(
               onPressed: _isLoading ? null : _updateBudget,
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
-                backgroundColor: Colors.purple,
+                backgroundColor: Colors.purple.withOpacity(0.6),
               ),
               child: const Text(
                 "Update Budget",
                 style: TextStyle(fontSize: 16),
               ),
             ),
+            const SizedBox(height:200),
             ElevatedButton(
               onPressed: (() => signOut()),
               child: Text("Sign Out"),

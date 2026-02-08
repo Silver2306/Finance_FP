@@ -227,12 +227,15 @@ class _HomepageState extends State<Homepage> {
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 //   children: [
-                Text(
-                  "Transactions",
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Theme.of(context).colorScheme.onBackground,
-                    fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Transactions",
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Theme.of(context).colorScheme.onBackground,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 RecentTransactions(limit: 4),
@@ -245,12 +248,15 @@ class _HomepageState extends State<Homepage> {
                       ),
                     );
                   },
-                  child: Text(
-                    "View All",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Theme.of(context).colorScheme.outline,
-                      fontWeight: FontWeight.w400,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      "View All",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Theme.of(context).colorScheme.outline,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                 ),
