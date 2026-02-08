@@ -10,8 +10,6 @@ import '../screens/addpage.dart';
 import '../screens/profile.dart';
 import '../screens/transactionpage.dart';
 
-
-
 class AppRoutes {
   // Route names
   static const String login = '/login';

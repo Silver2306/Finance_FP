@@ -234,3 +234,70 @@ Future<Map<String, double>> getExpense({int limit = 10}) async {
 
   return expenseStats;
 }
+
+Future<List<int>> barIncome() async {
+  final incomeStats = await getIncome(limit: 50);
+  const categoriesOrder = [
+    'Salary',
+    'Pocket Money',
+    'Investment',
+    'Gift',
+    'Misc',
+  ];
+
+  final List<int> values = List.filled(categoriesOrder.length, 0);
+
+  for (final entry in incomeStats.entries) {
+    final index = categoriesOrder.indexOf(entry.key);
+    if (index != -1) {
+      values[index] += entry.value.toInt();
+    } else {
+      // optional: add unknown categories to "Other"
+      values.last += entry.value.toInt();
+    }
+  }
+
+  return values;
+}
+
+Future<List<int>> barExpense() async {
+  final expenseStats = await getExpense(limit: 50);
+  const categoriesOrder = [
+    'Food',
+    'Clothes',
+    'Travel',
+    'Gifts',
+    'Entertainment',
+    'College',
+    'Misc',
+  ];
+
+  final List<int> values = List.filled(categoriesOrder.length, 0);
+
+  for (final entry in expenseStats.entries) {
+    final index = categoriesOrder.indexOf(entry.key);
+    if (index != -1) {
+      values[index] += entry.value.toInt();
+    } else {
+      // optional: add unknown categories to "Other"
+      values.last += entry.value.toInt();
+    }
+  }
+
+  return values;
+}
+
+Future<Map<String, double>> bargraph() async {
+  final stats = await fetchDashboardData();
+
+  final budget = stats["budget"] ?? 0.0;
+  final expense = stats["expense"] ?? 0.0;
+  final balance = budget - expense;
+
+  final barstats = <String, double>{};
+  barstats['budget'] = budget;
+  barstats['expense'] = expense;
+  barstats['balance'] = balance;
+
+  return barstats;
+}

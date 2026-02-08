@@ -302,6 +302,17 @@ Widget transact({
         return;
       }
 
+      if (amt > 1000000) {
+        ToastifyFlutter.error(
+          context,
+          message: "Amount cannot exceed ₹1,000,000",
+          duration: 5,
+          position: ToastPosition.top,
+          style: ToastStyle.flatColored,
+        );
+        return;
+      }
+
       try {
         await addTransaction(
           type: type,

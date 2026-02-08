@@ -1,9 +1,30 @@
+import 'package:finance_app/components-services/firebase_services.dart';
 import 'package:finance_app/screens/stats/stattile.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-class ExpenseTab extends StatelessWidget {
-  const ExpenseTab({super.key});
+class Expensetab extends StatefulWidget {
+  const Expensetab({super.key});
+
+  @override
+  State<Expensetab> createState() => _ExpensetabState();
+}
+
+class _ExpensetabState extends State<Expensetab> {
+  List<int> _dailyExpense = List.filled(7, 0);
+
+  @override
+  void initState() {
+    super.initState();
+    _loadExpense();
+  }
+
+  Future<void> _loadExpense() async {
+    final data = await barExpense(); // ← your function from earlier
+    if (mounted) {
+      setState(() => _dailyExpense = data);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +32,6 @@ class ExpenseTab extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       child: Column(
         children: [
-          // 🔼 EXPENSE BAR CHART
           AspectRatio(
             aspectRatio: 1.7,
             child: Card(
@@ -31,45 +51,26 @@ class ExpenseTab extends StatelessWidget {
                         sideTitles: SideTitles(
                           showTitles: true,
                           getTitlesWidget: (value, meta) {
-                            switch (value.toInt()) {
-                              case 0:
-                                return const Text(
-                                  'Mn',
-                                  style: TextStyle(color: Colors.white),
-                                );
-                              case 1:
-                                return const Text(
-                                  'Te',
-                                  style: TextStyle(color: Colors.white),
-                                );
-                              case 2:
-                                return const Text(
-                                  'Wd',
-                                  style: TextStyle(color: Colors.white),
-                                );
-                              case 3:
-                                return const Text(
-                                  'Tu',
-                                  style: TextStyle(color: Colors.white),
-                                );
-                              case 4:
-                                return const Text(
-                                  'Fr',
-                                  style: TextStyle(color: Colors.white),
-                                );
-                              case 5:
-                                return const Text(
-                                  'St',
-                                  style: TextStyle(color: Colors.white),
-                                );
-                              case 6:
-                                return const Text(
-                                  'Sn',
-                                  style: TextStyle(color: Colors.white),
-                                );
-                              default:
-                                return const Text('');
+                            const labels = [
+                              'Food',
+                              'Clothes',
+                              'Travel',
+                              'Gifts',
+                              'Entertain',
+                              'College',
+                              'Misc',
+                            ];
+                            if (value.toInt() >= 0 &&
+                                value.toInt() < labels.length) {
+                              return Text(
+                                labels[value.toInt()],
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.white,
+                                ),
+                              );
                             }
+                            return const Text('');
                           },
                         ),
                       ),
@@ -97,15 +98,11 @@ class ExpenseTab extends StatelessWidget {
                       ),
                     ),
                     borderData: FlBorderData(show: false),
-                    barGroups: [
-                      makeGroupData(0, 4000),
-                      makeGroupData(1, 6000),
-                      makeGroupData(2, 3000),
-                      makeGroupData(3, 8000),
-                      makeGroupData(4, 5000),
-                      makeGroupData(5, 7000),
-                      makeGroupData(6, 2000),
-                    ],
+                    barGroups: _dailyExpense
+                        .asMap()
+                        .entries
+                        .map((e) => makeGroupData(e.key, e.value.toDouble()))
+                        .toList(),
                   ),
                 ),
               ),
@@ -113,42 +110,20 @@ class ExpenseTab extends StatelessWidget {
           ),
 
           const SizedBox(height: 16),
-
-          // // 🔽 EXPENSE LIST BELOW CHART
-          // Expanded(
-          //   child: ListView(
-          //     children: const [
-          //       ListTile(
-          //         leading: Icon(Icons.arrow_downward, color: Colors.red),
-          //         title: Text('Groceries'),
-          //         trailing: Text(
-          //           '₹4000',
-          //           style: TextStyle(
-          //               color: Colors.red, fontWeight: FontWeight.bold),
-          //         ),
-          //       ),
-          //       ListTile(
-          //         leading: Icon(Icons.arrow_downward, color: Colors.red),
-          //         title: Text('Rent'),
-          //         trailing: Text(
-          //           '₹6000',
-          //           style: TextStyle(
-          //               color: Colors.red, fontWeight: FontWeight.bold),
-          //         ),
-          //       ),
-          //       ListTile(
-          //         leading: Icon(Icons.arrow_downward, color: Colors.red),
-          //         title: Text('Transport'),
-          //         trailing: Text(
-          //           '₹3000',
-          //           style: TextStyle(
-          //               color: Colors.red, fontWeight: FontWeight.bold),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          expenseTile(),
+          Expanded(
+            child: Scrollbar(
+              thumbVisibility: true,
+              interactive: true,
+              radius: const Radius.circular(10),
+              thickness: 5,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                physics:
+                    const BouncingScrollPhysics(), // nice feel on iOS/Android
+                child: expenseTile(),
+              ),
+            ),
+          ),
         ],
       ),
     );

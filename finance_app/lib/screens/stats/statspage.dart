@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'incometab.dart';
 import 'expensetab.dart';
+import 'incometab.dart';
 
 class Statspage extends StatelessWidget {
   const Statspage({super.key});
@@ -19,7 +19,7 @@ class Statspage extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(children: [IncomeTab(), ExpenseTab()]),
+        body: TabBarView(children: [Incometab(), Expensetab()]),
       ),
     );
   }

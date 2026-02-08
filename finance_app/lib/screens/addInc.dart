@@ -11,7 +11,13 @@ class Addinc extends StatefulWidget {
 class _AddincState extends State<Addinc> {
   TextEditingController amtcontroller = TextEditingController();
   TextEditingController notecontroller = TextEditingController();
-  final List<String> _categories = ['Salary', 'Pocket Money', 'Misc', 'Gifts'];
+  final List<String> _categories = [
+    'Salary',
+    'Pocket Money',
+    'Misc',
+    'Investment',
+    'Gift',
+  ];
   String? _selectedCategory;
 
   @override

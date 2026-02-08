@@ -18,6 +18,7 @@ class _AddexpState extends State<Addexp> {
     'Gifts',
     'Entertainment',
     'College',
+    'Misc'
   ];
   String? _selectedCategory;
 

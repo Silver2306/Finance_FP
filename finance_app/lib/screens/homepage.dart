@@ -29,7 +29,7 @@ class _HomepageState extends State<Homepage> {
   }
 
   Future<Map<String, double>>? dashboardFuture;
-
+  bool _hasShownOverBudgetWarning = false;
   @override
   void initState() {
     super.initState();
@@ -40,7 +40,30 @@ class _HomepageState extends State<Homepage> {
   void refreshDashboard() {
     setState(() {
       dashboardFuture = fetchDashboardData();
+      _hasShownOverBudgetWarning = false;
     });
+  }
+
+  void _showOverBudgetToastIfNeeded(
+    Map<String, double> data,
+    BuildContext context,
+  ) {
+    if (_hasShownOverBudgetWarning) return;
+
+    final expense = data["expense"] ?? 0;
+    final budget = data["budget"] ?? 0;
+
+    if (expense > budget && expense > 0 && budget > 0) {
+      ToastifyFlutter.error(
+        context,
+        message: "Expenses exceeded budget!",
+        duration: 5,
+        position: ToastPosition.top,
+        style: ToastStyle.flatColored,
+      );
+
+      _hasShownOverBudgetWarning = true;
+    }
   }
 
   int index = 0;
@@ -132,12 +155,6 @@ class _HomepageState extends State<Homepage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //  header(
-                //  "Budgii",
-                //"Dashboard",
-                //20,
-                //  Colors.purple.withOpacity(0.3),
-                //),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -179,7 +196,8 @@ class _HomepageState extends State<Homepage> {
                               final budget = data["budget"] ?? 0.0;
                               final income = data["income"] ?? 0.0;
                               final expense = data["expense"] ?? 0.0;
-                              final balance = budget - expense;
+
+                              _showOverBudgetToastIfNeeded(data, context);
 
                               return displayCard(
                                 context: context,
@@ -205,135 +223,37 @@ class _HomepageState extends State<Homepage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Transactions",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Theme.of(context).colorScheme.onBackground,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    //on tap of view all it will show a list of transactions
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Transactions(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        "View All",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).colorScheme.outline,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: 20),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                Text(
+                  "Transactions",
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Theme.of(context).colorScheme.onBackground,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                RecentTransactions(limit: 3),
-                //const SizedBox(height: 5),
-
-                //List view of all transactions
-                // Expanded(
-                //   child: ListView.builder(
-                //     itemCount: 3,
-                //     itemBuilder: (context, index) {
-                //       return Padding(
-                //         padding: const EdgeInsets.only(bottom: 16.0),
-                //         child: Container(
-                //           decoration: BoxDecoration(
-                //             color: Colors.white,
-                //             borderRadius: BorderRadius.circular(12),
-                //           ),
-                //           child: Padding(
-                //             padding: const EdgeInsets.all(16.0),
-                //             child: Row(
-                //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //               children: [
-                //                 Row(
-                //                   children: [
-                //                     Container(
-                //                       width: 50,
-                //                       height: 50,
-                //                       child: Icon(
-                //                         Icons.currency_rupee_outlined,
-                //                       ),
-                //                       // decoration: BoxDecoration(
-                //                       //   color: Colors.yellow,
-                //                       //   shape: BoxShape.circle,
-                //                       // ),
-                //                     ),
-                //                     SizedBox(width: 12),
-                //                     Text(
-                //                       "Food",
-                //                       style: TextStyle(
-                //                         fontSize: 14,
-                //                         color: Theme.of(
-                //                           context,
-                //                         ).colorScheme.onBackground,
-                //                         fontWeight: FontWeight.w500,
-                //                       ),
-                //                     ),
-                //                   ],
-                //                 ),
-                //                 Column(
-                //                   children: [
-                //                     Text(
-                //                       "- RS.800",
-                //                       style: TextStyle(
-                //                         fontSize: 14,
-                //                         color: Theme.of(
-                //                           context,
-                //                         ).colorScheme.onBackground,
-                //                         fontWeight: FontWeight.w400,
-                //                       ),
-                //                     ),
-                //                     Text(
-                //                       "Today",
-                //                       style: TextStyle(
-                //                         fontSize: 14,
-                //                         color: Theme.of(
-                //                           context,
-                //                         ).colorScheme.outline,
-                //                         fontWeight: FontWeight.w400,
-                //                       ),
-                //                     ),
-                //                   ],
-                //                 ),
-                //               ],
-                //             ),
-                //           ),
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // ),
-
-                //appButton(context: context, label: 'Signout', routeName: AppRoutes.login)
-                // ElevatedButton(
-                //   onPressed: (() => signOut()),
-                //   child: Text("Sign Out"),
-                // ),
-                // ElevatedButton(
-                //   onPressed: () {
-                //     Navigator.pushNamed(context, AppRoutes.addinc);
-                //   },
-                //   child: Text("Add Income"),
-                // ),
-                // ElevatedButton(
-                //   onPressed: () {
-                //     Navigator.pushNamed(context, AppRoutes.addexp);
-                //   },
-                //   child: Text("Add Expense"),
-                // ),
+                RecentTransactions(limit: 4),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Transactions(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "View All",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Theme.of(context).colorScheme.outline,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
               ],
             )
           : Statspage(),
