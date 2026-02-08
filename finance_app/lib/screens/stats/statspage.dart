@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'expensetab.dart';
 import 'incometab.dart';
+import 'budgettab.dart';
+
 
 class Statspage extends StatelessWidget {
   const Statspage({super.key});
@@ -8,7 +10,7 @@ class Statspage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Statistics"),
@@ -16,10 +18,11 @@ class Statspage extends StatelessWidget {
             tabs: [
               Tab(text: "Income"),
               Tab(text: "Expense"),
+              Tab(text: "Budget"),
             ],
           ),
         ),
-        body: TabBarView(children: [Incometab(), Expensetab()]),
+        body: TabBarView(children: [Incometab(), Expensetab(),BudgetTab()]),
       ),
     );
   }

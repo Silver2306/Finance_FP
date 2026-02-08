@@ -235,6 +235,7 @@ Future<Map<String, double>> getExpense({int limit = 10}) async {
   return expenseStats;
 }
 
+
 Future<List<int>> barIncome() async {
   final incomeStats = await getIncome(limit: 50);
   const categoriesOrder = [
