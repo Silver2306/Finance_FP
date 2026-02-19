@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:finance_app/components-services/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -104,135 +106,162 @@ Widget displayCard({
   //IconData icon = Icons.trending_up,
 }) {
   return Card(
-    elevation: 2,
+    elevation: 0,
+    color: Colors.transparent,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadiusGeometry.circular(16),
     ),
-    child: Container(
-      height: height,
-      width: width,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color.fromARGB(255, 244, 198, 206),
-            Color.fromARGB(129, 233, 4, 42),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontStyle: FontStyle.normal,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          //Icon(icon),
-          SizedBox(height: 5),
-          Text(
-            amount,
-            style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 30,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        color: Colors.white24,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: Icon(
-                          CupertinoIcons.arrow_down,
-                          size: 15,
-                          color: Colors.redAccent,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    Column(
-                      children: [
-                        Text(
-                          "Expense",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-
-                        Text(
-                          "₹${exptotal.toStringAsFixed(2)}",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-
-                Row(
-                  children: [
-                    Container(
-                      width: 30,
-                      height: 30,
-                      decoration: BoxDecoration(
-                        color: Colors.white24,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: Icon(
-                          CupertinoIcons.arrow_up,
-                          size: 15,
-                          color: Colors.green,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    Column(
-                      children: [
-                        Text(
-                          "Income",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-
-                        Text(
-                          "₹${inctotal.toStringAsFixed(2)}",
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(25),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+        child: Container(
+          height: height,
+          width: width,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            gradient: LinearGradient(
+              colors: [
+                const Color(0xFFF8BBD0).withOpacity(0.35), // baby pink
+                const Color(0xFFFCE4EC).withOpacity(0.25),
+                //Color.fromARGB(255, 244, 198, 206),
+                //Color.fromARGB(129, 233, 4, 42),
               ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
+            //borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.4),
+              width: 1.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.pink.withOpacity(0.15),
+                blurRadius: 25,
+                offset: const Offset(0, 15),
+              ),
+            ],
           ),
-        ],
+
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontStyle: FontStyle.normal,
+                  fontSize: 16,
+                  color: Colors.black87,
+                  letterSpacing: 0.5,
+                ),
+              ),
+              //Icon(icon),
+              SizedBox(height: 5),
+              Text(
+                amount,
+                style: TextStyle(fontSize: 32,color:Colors.black, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 20,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: Colors.white24,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Icon(
+                              CupertinoIcons.arrow_down,
+                              size: 15,
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Expense",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+
+                            Text(
+                              "₹${exptotal.toStringAsFixed(2)}",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+
+                    Row(
+                      children: [
+                        Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            color: Colors.white24,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Icon(
+                              CupertinoIcons.arrow_up,
+                              size: 15,
+                              color: Colors.green,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Column(
+                          children: [
+                            Text(
+                              "Income",
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+
+                            Text(
+                              "₹${inctotal.toStringAsFixed(2)}",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     ),
   );

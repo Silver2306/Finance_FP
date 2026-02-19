@@ -73,13 +73,16 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //backgroundColor: const Color.fromARGB(255, 243, 243, 243),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(
-          255,
-          200,
-          125,
-          135,
-        ), // or whatever color you like
+        //backgroundColor: Color.fromARGB(
+          //255,
+          //200,
+          //125,
+          //135,
+        //), or whatever color you like
+        // for glassmorphism effect
+        backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
           "Hello, ${user?.displayName ?? 'User'}", // Firebase name
@@ -145,8 +148,8 @@ class _HomepageState extends State<Homepage> {
             shape: BoxShape.circle,
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 244, 198, 206),
-                Color.fromARGB(129, 233, 4, 42),
+                Color.fromARGB(255, 255, 255, 255),
+                Color.fromARGB(129, 232, 98, 121),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -239,9 +242,9 @@ class _HomepageState extends State<Homepage> {
                   child: Text(
                     "Transactions",
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 20,
                       color: Theme.of(context).colorScheme.onBackground,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),

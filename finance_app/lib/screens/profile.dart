@@ -75,7 +75,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profile"),
-        backgroundColor: Color.fromARGB(255, 200, 125, 135),
+        backgroundColor: Color.fromARGB(255, 232, 215, 217),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
