@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:toastify_flutter/toastify_flutter.dart';
 
 final db = FirebaseDatabase.instanceFor(
   app: Firebase.app(),
@@ -202,6 +203,10 @@ Future<void> setBudget({required TextEditingController amt}) async {
     throw Exception("Please enter a valid positive number");
   }
 
+  if (amount > 1000000) {
+    throw Exception("Please enter an amount below 1000000");
+  }
+
   final ref = db.ref("users/${user.uid}/budget");
 
   await ref.set(amount);
@@ -234,7 +239,6 @@ Future<Map<String, double>> getExpense({int limit = 10}) async {
 
   return expenseStats;
 }
-
 
 Future<List<int>> barIncome() async {
   final incomeStats = await getIncome(limit: 50);

@@ -18,7 +18,7 @@ class _TransactionsState extends State<Transactions> {
       ),
       body: Column(
         children: [
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           Expanded(
             child: Scrollbar(
               thumbVisibility: true,

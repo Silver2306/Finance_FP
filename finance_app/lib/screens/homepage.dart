@@ -145,8 +145,8 @@ class _HomepageState extends State<Homepage> {
             shape: BoxShape.circle,
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 240, 196, 203),
-                Color.fromARGB(255, 240, 196, 203),
+                Color.fromARGB(255, 244, 198, 206),
+                Color.fromARGB(129, 233, 4, 42),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -161,6 +161,7 @@ class _HomepageState extends State<Homepage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

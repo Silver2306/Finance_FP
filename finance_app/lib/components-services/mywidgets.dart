@@ -115,8 +115,8 @@ Widget displayCard({
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color.fromARGB(255, 240, 196, 203),
-            Color.fromARGB(255, 240, 196, 203),
+            Color.fromARGB(255, 244, 198, 206),
+            Color.fromARGB(129, 233, 4, 42),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,

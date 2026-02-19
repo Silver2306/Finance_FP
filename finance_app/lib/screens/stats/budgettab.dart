@@ -84,13 +84,18 @@ class _BudgetTabState extends State<BudgetTab> {
                           sections: [
                             PieChartSectionData(
                               value: expense,
-                              color: const Color(0xffFF6B6B), // Expense
+                              color: Color.fromARGB(149, 233, 4, 42), // Expense
                               radius: 45,
                               showTitle: false,
                             ),
                             PieChartSectionData(
                               value: balance,
-                              color: const Color(0xff4ECDC4), // Balance
+                              color: Color.fromARGB(
+                                207,
+                                56,
+                                172,
+                                141,
+                              ), // Balance
                               radius: 45,
                               showTitle: false,
                             ),
@@ -130,13 +135,13 @@ class _BudgetTabState extends State<BudgetTab> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _legendItem(
-                      const Color(0xffFF6B6B),
+                      Color.fromARGB(149, 233, 4, 42),
                       "Expense",
                       expense.toStringAsFixed(0),
                       expensePercent,
                     ),
                     _legendItem(
-                      const Color(0xff4ECDC4),
+                      Color.fromARGB(207, 56, 172, 141),
                       "Balance",
                       balance.toStringAsFixed(0),
                       balancePercent,
