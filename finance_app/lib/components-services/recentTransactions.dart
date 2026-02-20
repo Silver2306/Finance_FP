@@ -101,18 +101,36 @@ class RecentTransactions extends StatelessWidget {
                               width: 50,
                               height: 50,
                               child: Icon(Icons.currency_rupee_outlined),
-                             
                             ),
                             SizedBox(width: 12),
-                            Text(
-                              tx.category,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onBackground,
-                                fontWeight: FontWeight.w500,
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  tx.category,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onBackground,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                if (tx.note != null &&
+                                    tx.note!.trim().isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4),
+                                    child: Text(
+                                      tx.note!,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.outline,
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
                           ],
                         ),

@@ -12,6 +12,8 @@ class Expensetab extends StatefulWidget {
 
 class _ExpensetabState extends State<Expensetab> {
   List<int> _dailyExpense = List.filled(7, 0);
+  int selectedYear = DateTime.now().year;
+  int selectedMonth = DateTime.now().month; // 1-12
 
   @override
   void initState() {
@@ -20,7 +22,7 @@ class _ExpensetabState extends State<Expensetab> {
   }
 
   Future<void> _loadExpense() async {
-    final data = await barExpense(); // ← your function from earlier
+    final data = await barExpense(year: selectedYear, month: selectedMonth);
     if (mounted) {
       setState(() => _dailyExpense = data);
     }
@@ -44,7 +46,7 @@ class _ExpensetabState extends State<Expensetab> {
                 child: BarChart(
                   BarChartData(
                     alignment: BarChartAlignment.spaceAround,
-                    maxY: 10000,
+                    maxY: 20000,
                     barTouchData: BarTouchData(enabled: false),
                     titlesData: FlTitlesData(
                       bottomTitles: AxisTitles(
@@ -77,7 +79,7 @@ class _ExpensetabState extends State<Expensetab> {
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          interval: 2000,
+                          interval: 5000,
                           reservedSize: 42,
                           getTitlesWidget: (value, meta) {
                             return Text(

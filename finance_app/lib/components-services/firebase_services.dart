@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:toastify_flutter/toastify_flutter.dart';
 
 final db = FirebaseDatabase.instanceFor(
   app: Firebase.app(),
@@ -14,7 +13,7 @@ Future<void> addTransaction({
   required String type,
   required int amt,
   required String category,
-  String? note = "",
+  String? note,
 }) async {
   final user = FirebaseAuth.instance.currentUser;
 
@@ -33,7 +32,10 @@ Future<void> addTransaction({
   });
 }
 
-Future<Map<String, double>> fetchDashboardData() async {
+Future<Map<String, double>> fetchDashboardData({
+  required int year,
+  required int month,
+}) async {
   final user = FirebaseAuth.instance.currentUser;
 
   if (user == null) {
@@ -42,9 +44,6 @@ Future<Map<String, double>> fetchDashboardData() async {
 
   final String uid = user.uid;
   final ref = db.ref("users/$uid");
-
-  //final uid = FirebaseAuth.instance.currentUser!.uid;
-  //final userRef = FirebaseDatabase.instance.ref("users/$uid");
 
   final DataSnapshot snapshot = await ref.get();
 
@@ -63,12 +62,11 @@ Future<Map<String, double>> fetchDashboardData() async {
     budget = double.tryParse(rawBudget) ?? 0.0;
   }
 
-  final now = DateTime.now();
-  final firstDayOfMonth = DateTime(now.year, now.month, 1);
-  final firstDayOfNextMonth = DateTime(now.year, now.month + 1, 1);
+  final firstDayOfMonth = DateTime(year, month, 1);
+  final firstDayOfNextMonth = DateTime(year, month + 1, 1);
 
   final startMs = firstDayOfMonth.millisecondsSinceEpoch;
-  final endMs = firstDayOfNextMonth.millisecondsSinceEpoch - 1; // inclusive
+  final endMs = firstDayOfNextMonth.millisecondsSinceEpoch - 1;
 
   // ── Monthly income & expense
   double monthlyIncome = 0.0;
@@ -94,16 +92,13 @@ Future<Map<String, double>> fetchDashboardData() async {
       // Skip if no valid amount
       if (amount <= 0) continue;
 
-      // Check date (timestamp in ms)
-      final ts = timestampRaw;
-      bool isCurrentMonth = false;
-
-      if (ts is num) {
-        final txTimeMs = ts.toInt();
-        isCurrentMonth = txTimeMs >= startMs && txTimeMs <= endMs;
+      bool inSelectedMonth = false;
+      if (timestampRaw is num) {
+        final txTimeMs = timestampRaw.toInt();
+        inSelectedMonth = txTimeMs >= startMs && txTimeMs <= endMs;
       }
 
-      if (isCurrentMonth) {
+      if (inSelectedMonth) {
         if (typeRaw == "income") {
           monthlyIncome += amount;
         } else if (typeRaw == "expense") {
@@ -187,61 +182,59 @@ Future<List<TransactionSummary>> getTransaction({int limit = 5}) async {
   }
 }
 
-Future<void> setBudget({required TextEditingController amt}) async {
+Future<void> setBudget({required double amt}) async {
   final user = FirebaseAuth.instance.currentUser;
 
   if (user == null) {
     throw Exception("User not logged in");
   }
-  final String text = amt.text.trim();
-  if (text.isEmpty) {
-    throw Exception("Please enter a budget amount");
-  }
-
-  final double? amount = double.tryParse(text);
-  if (amount == null || amount < 0) {
-    throw Exception("Please enter a valid positive number");
-  }
-
-  if (amount > 1000000) {
-    throw Exception("Please enter an amount below 1000000");
-  }
-
   final ref = db.ref("users/${user.uid}/budget");
 
-  await ref.set(amount);
+  await ref.set(amt);
 }
 
-Future<Map<String, double>> getIncome({int limit = 10}) async {
+Future<Map<String, double>> getIncome({
+  required int year,
+  required int month,
+  int limit = 50,
+}) async {
   final transactionStats = await getTransaction(limit: limit);
   final incomeStats = <String, double>{};
 
   for (final t in transactionStats) {
     if (t.type == 'income') {
-      final cat = t.category;
-      incomeStats[cat] = (incomeStats[cat] ?? 0) + t.amount;
+      if (t.date.year == year || t.date.month == month) {
+        final cat = t.category;
+        incomeStats[cat] = (incomeStats[cat] ?? 0) + t.amount;
+      }
     }
   }
 
   return incomeStats;
 }
 
-Future<Map<String, double>> getExpense({int limit = 10}) async {
+Future<Map<String, double>> getExpense({
+  required int year,
+  required int month,
+  int limit = 50,
+}) async {
   final transactionStats = await getTransaction(limit: limit);
   final expenseStats = <String, double>{};
 
   for (final t in transactionStats) {
     if (t.type == 'expense') {
-      final cat = t.category;
-      expenseStats[cat] = (expenseStats[cat] ?? 0) + t.amount;
+      if (t.date.year == year || t.date.month == month) {
+        final cat = t.category;
+        expenseStats[cat] = (expenseStats[cat] ?? 0) + t.amount;
+      }
     }
   }
 
   return expenseStats;
 }
 
-Future<List<int>> barIncome() async {
-  final incomeStats = await getIncome(limit: 50);
+Future<List<int>> barIncome({required int year, required int month}) async {
+  final incomeStats = await getIncome(year: year, month: month, limit: 50);
   const categoriesOrder = [
     'Salary',
     'Pocket Money',
@@ -265,8 +258,8 @@ Future<List<int>> barIncome() async {
   return values;
 }
 
-Future<List<int>> barExpense() async {
-  final expenseStats = await getExpense(limit: 50);
+Future<List<int>> barExpense({required int year, required int month}) async {
+  final expenseStats = await getExpense(year: year, month: month, limit: 50);
   const categoriesOrder = [
     'Food',
     'Clothes',
@@ -284,7 +277,6 @@ Future<List<int>> barExpense() async {
     if (index != -1) {
       values[index] += entry.value.toInt();
     } else {
-      // optional: add unknown categories to "Other"
       values.last += entry.value.toInt();
     }
   }
@@ -292,8 +284,11 @@ Future<List<int>> barExpense() async {
   return values;
 }
 
-Future<Map<String, double>> bargraph() async {
-  final stats = await fetchDashboardData();
+Future<Map<String, double>> piegraph({
+  required int year,
+  required int month,
+}) async {
+  final stats = await fetchDashboardData(year: year, month: month);
 
   final budget = stats["budget"] ?? 0.0;
   final expense = stats["expense"] ?? 0.0;

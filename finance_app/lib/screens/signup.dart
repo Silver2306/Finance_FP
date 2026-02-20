@@ -114,7 +114,7 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Sign Up"),
-        backgroundColor: Color.fromARGB(255, 200, 125, 135),
+        backgroundColor: const Color.fromARGB(150, 248, 187, 208),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
@@ -158,7 +158,7 @@ class _SignUpState extends State<SignUp> {
                 shape: const StadiumBorder(),
                 padding: const EdgeInsets.symmetric(vertical: 16),
 
-                backgroundColor: Color.fromARGB(255, 200, 125, 135),
+                backgroundColor: const Color.fromARGB(150, 248, 187, 208),
               ),
               child: const Text(
                 "Sign Up",

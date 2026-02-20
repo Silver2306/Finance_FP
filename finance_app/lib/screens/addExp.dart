@@ -18,7 +18,7 @@ class _AddexpState extends State<Addexp> {
     'Gifts',
     'Entertainment',
     'College',
-    'Misc'
+    'Misc',
   ];
   String? _selectedCategory;
 
@@ -57,6 +57,7 @@ class _AddexpState extends State<Addexp> {
               type: 'expense',
               amtController: amtcontroller,
               category: _selectedCategory,
+              noteController: notecontroller,
             ),
           ],
         ),

@@ -18,7 +18,8 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   final user = FirebaseAuth.instance.currentUser;
-
+  int selectedYear = DateTime.now().year;
+  int selectedMonth = DateTime.now().month;
   Future<void> signOut() async {
     await FirebaseAuth.instance.signOut();
     Navigator.pushNamedAndRemoveUntil(
@@ -34,12 +35,18 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
 
-    dashboardFuture = fetchDashboardData();
+    dashboardFuture = fetchDashboardData(
+      year: selectedYear,
+      month: selectedMonth,
+    );
   }
 
   void refreshDashboard() {
     setState(() {
-      dashboardFuture = fetchDashboardData();
+      dashboardFuture = fetchDashboardData(
+        year: selectedYear,
+        month: selectedMonth,
+      );
       _hasShownOverBudgetWarning = false;
     });
   }
@@ -56,7 +63,7 @@ class _HomepageState extends State<Homepage> {
     if (expense > budget && expense > 0 && budget > 0) {
       ToastifyFlutter.error(
         context,
-        message: "Expenses exceeded budget!",
+        message: "You have exceeded your budget!",
         duration: 5,
         position: ToastPosition.top,
         style: ToastStyle.flatColored,
@@ -75,14 +82,7 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       //backgroundColor: const Color.fromARGB(255, 243, 243, 243),
       appBar: AppBar(
-        //backgroundColor: Color.fromARGB(
-          //255,
-          //200,
-          //125,
-          //135,
-        //), or whatever color you like
-        // for glassmorphism effect
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(150, 248, 187, 208),
         elevation: 0,
         title: Text(
           "Hello, ${user?.displayName ?? 'User'}", // Firebase name
@@ -96,14 +96,14 @@ class _HomepageState extends State<Homepage> {
               debugPrint('$result');
               if (result == true) {
                 refreshDashboard();
-              } // replace with your route
+              }
             },
           ),
         ],
       ),
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(30),
+          top: Radius.circular(40),
           bottom: Radius.circular(20),
         ),
         child: BottomNavigationBar(

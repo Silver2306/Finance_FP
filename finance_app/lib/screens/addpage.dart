@@ -12,11 +12,11 @@ class Addpage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Add Transactions"),
-          backgroundColor: Color.fromARGB(255, 200, 125, 135),
+          backgroundColor: const Color.fromARGB(150, 248, 187, 208),
           bottom: const TabBar(
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.black,
-            indicatorColor: Colors.white,
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.black54,
+            indicatorColor: Colors.pink,
             tabs: [
               Tab(text: "Add Income"),
               Tab(text: "Add Expense"),

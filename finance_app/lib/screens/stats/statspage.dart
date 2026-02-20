@@ -15,9 +15,11 @@ class Statspage extends StatelessWidget {
           title: const Text("Statistics"),
           backgroundColor: const Color.fromARGB(255, 250, 245, 240),
           bottom: const TabBar(
-            labelColor: Color.fromARGB(255, 200, 125, 135),
+            labelColor: //const Color.fromARGB(150, 248, 187, 208),
+                Colors.black,
             unselectedLabelColor: Colors.black54,
-            indicatorColor: Color.fromARGB(255, 200, 125, 135),
+            indicatorColor: //const Color.fromARGB(150, 248, 187, 208),
+                Colors.pink,
             tabs: [
               Tab(text: "Income"),
               Tab(text: "Expense"),

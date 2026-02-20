@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import '../../components-services/firebase_services.dart';
 
 class expenseTile extends StatelessWidget {
-  const expenseTile({super.key});
-
+  expenseTile({super.key});
+  int selectedYear = DateTime.now().year;
+  int selectedMonth = DateTime.now().month; // 1-12
   @override
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder<Map<String, double>>(
-        future: getExpense(),
+        future: getExpense(year: selectedYear, month: selectedMonth),
         builder: (context, snapshot) {
           final summary = snapshot.data ?? {};
           if (summary.isEmpty) return Text("No expense yet");
@@ -37,13 +38,16 @@ class expenseTile extends StatelessWidget {
 }
 
 class incomeTile extends StatelessWidget {
-  const incomeTile({super.key});
+  incomeTile({super.key});
+
+  int selectedYear = DateTime.now().year;
+  int selectedMonth = DateTime.now().month; // 1-12
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder<Map<String, double>>(
-        future: getIncome(),
+        future: getIncome(year: selectedYear, month: selectedMonth),
         builder: (context, snapshot) {
           final summary = snapshot.data ?? {};
           if (summary.isEmpty) return Text("No income yet");

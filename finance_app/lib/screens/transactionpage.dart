@@ -14,7 +14,7 @@ class _TransactionsState extends State<Transactions> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Transactions Page"),
-        backgroundColor: Color.fromARGB(255, 200, 125, 135),
+        backgroundColor: const Color.fromARGB(150, 248, 187, 208),
       ),
       body: Column(
         children: [

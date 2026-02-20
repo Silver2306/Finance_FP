@@ -24,14 +24,41 @@ class _ProfileState extends State<Profile> {
 
   bool _isLoading = false;
   final budgetController = TextEditingController();
+  double currentBudget = 0.0;
+  bool isBudgetLoading = true;
 
-  Future<void> _updateBudget() async {
+  @override
+  void initState() {
+    super.initState();
+    _loadBudget();
+  }
+
+  Future<void> _loadBudget() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final snapshot = await db.ref("users/${user.uid}/budget").get();
+
+    if (snapshot.exists && snapshot.value != null) {
+      setState(() {
+        currentBudget = (snapshot.value as num).toDouble();
+        isBudgetLoading = false;
+      });
+    } else {
+      setState(() {
+        currentBudget = 0.0;
+        isBudgetLoading = false;
+      });
+    }
+  }
+
+  Future<void> _updateBudget(double amount) async {
     if (_isLoading) return;
 
     setState(() => _isLoading = true);
 
     try {
-      await setBudget(amt: budgetController);
+      await setBudget(amt: amount);
 
       if (!mounted) {
         ToastifyFlutter.success(
@@ -43,14 +70,11 @@ class _ProfileState extends State<Profile> {
         );
       }
 
-      if (context.mounted) {
-        // Navigator.pop(context, true);
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoutes.home,
-          (route) => false,
-        );
-      }
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRoutes.home,
+        (route) => false,
+      );
     } catch (e) {
       if (!mounted) {
         return ToastifyFlutter.error(
@@ -75,7 +99,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Profile"),
-        backgroundColor: Color.fromARGB(255, 232, 215, 217),
+        backgroundColor: const Color.fromARGB(150, 248, 187, 208),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -86,7 +110,7 @@ class _ProfileState extends State<Profile> {
               leading: const Icon(
                 Icons.person,
                 size: 40,
-                color: Color.fromARGB(255, 200, 125, 135),
+                color: Colors.black54,
               ),
               title: Text(
                 user?.displayName ?? 'User',
@@ -104,38 +128,53 @@ class _ProfileState extends State<Profile> {
             const SizedBox(height: 24),
 
             // 💰 Budget Card
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              color: Color.fromARGB(255, 240, 196, 203),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.currency_rupee_rounded,
-                      color: Colors.black54,
-                      size: 28,
-                    ),
-                    const SizedBox(width: 12),
-                    StreamBuilder(
-                      stream: db.ref("users/${user?.uid}/budget").onValue,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData &&
-                            snapshot.data?.snapshot.value != null) {
-                          final budget = (snapshot.data!.snapshot.value as num)
-                              .toDouble();
-                          return Text("Budget: ₹${budget.toStringAsFixed(0)}");
-                        }
-                        return const Text("No budget set");
-                      },
-                    ),
-                  ],
-                ),
+            // Card(
+            // shape: OutlineInputBorder(
+            //   borderRadius: BorderRadius.circular(18),
+            //   borderSide: BorderSide.none,
+            // ),
+            //color: Color.fromARGB(255, 240, 196, 203),
+            // child:
+            Padding(
+              padding: const EdgeInsets.all(14),
+              child: Row(
+                children: [
+                  // const Icon(
+                  //   Icons.currency_rupee_rounded,
+                  //   color: Colors.black54,
+                  //   size: 28,
+                  // ),
+                  //const SizedBox(width: 12),
+                  // StreamBuilder(
+                  //   stream: db.ref("users/${user?.uid}/budget").onValue,
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.hasData &&
+                  //         snapshot.data?.snapshot.value != null) {
+                  //       final budget = (snapshot.data!.snapshot.value as num)
+                  //           .toDouble();
+                  //       return Text("Budget: ₹${budget.toStringAsFixed(0)}");
+                  //     }
+                  //     return const Text("No budget set");
+                  //   },
+                  // ),
+                  isBudgetLoading
+                      ? const SizedBox(
+                          height: 18,
+                          width: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(
+                          "Monthly Budget: ₹${currentBudget.toStringAsFixed(0)}",
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                ],
               ),
             ),
 
+            // ),
             const SizedBox(height: 30),
             inputField(
               controller: budgetController,
@@ -147,10 +186,35 @@ class _ProfileState extends State<Profile> {
             const SizedBox(height: 30),
 
             ElevatedButton(
-              onPressed: _isLoading ? null : _updateBudget,
+              onPressed: () async {
+                final amt = double.parse(budgetController.text);
+                if (amt <= 0) {
+                  ToastifyFlutter.error(
+                    context,
+                    message: "Enter a valid amount",
+                    duration: 5,
+                    position: ToastPosition.top,
+                    style: ToastStyle.flatColored,
+                  );
+                  return;
+                }
+
+                if (amt > 10000) {
+                  ToastifyFlutter.error(
+                    context,
+                    message: "Amount cannot exceed ₹10,000",
+                    duration: 5,
+                    position: ToastPosition.top,
+                    style: ToastStyle.flatColored,
+                  );
+                  return;
+                }
+
+                await _updateBudget(amt);
+              },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
-                backgroundColor: Color.fromARGB(255, 200, 125, 135),
+                backgroundColor: const Color.fromARGB(150, 248, 187, 208),
               ),
               child: const Text(
                 "Update Budget",
@@ -163,7 +227,7 @@ class _ProfileState extends State<Profile> {
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
 
-                backgroundColor: Color.fromARGB(255, 200, 125, 135),
+                backgroundColor: const Color.fromARGB(150, 248, 187, 208),
               ),
               child: Text(
                 "Sign Out",

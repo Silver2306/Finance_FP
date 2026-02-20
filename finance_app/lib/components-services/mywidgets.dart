@@ -52,7 +52,7 @@ Widget appButton({
     style: ElevatedButton.styleFrom(
       shape: const StadiumBorder(),
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-      backgroundColor: Color.fromARGB(255, 200, 125, 135),
+      backgroundColor: const Color.fromARGB(150, 248, 187, 208),
     ),
     child: Text(
       label,
@@ -67,7 +67,7 @@ Widget goToPage({
   String? prefixText,
   required String actionText,
   required String routeName,
-  Color actionColor = const Color.fromARGB(255, 200, 125, 135),
+  Color actionColor = const Color.fromARGB(147, 145, 14, 60),
 }) {
   return InkWell(
     onTap: () {
@@ -161,7 +161,11 @@ Widget displayCard({
               SizedBox(height: 5),
               Text(
                 amount,
-                style: TextStyle(fontSize: 32,color:Colors.black, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 32,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(height: 12),
               Padding(
@@ -238,8 +242,8 @@ Widget displayCard({
                             Text(
                               "Income",
                               style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.black54,
+                                fontSize: 15,
+                                color: Colors.black,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -290,7 +294,7 @@ Widget inputField({
           ),
           fillColor: Color.fromARGB(255, 240, 196, 203),
           filled: true,
-          prefixIcon: Icon(prefixIcon),
+          prefixIcon: Icon(prefixIcon, color: Colors.black54, size: 28),
         ),
       ),
       const SizedBox(height: 10),
@@ -336,10 +340,10 @@ Widget transact({
             return;
           }
 
-          if (amt > 1000000) {
+          if (amt > 10000) {
             ToastifyFlutter.error(
               context,
-              message: "Amount cannot exceed ₹1,000,000",
+              message: "Amount cannot exceed ₹10,000",
               duration: 5,
               position: ToastPosition.top,
               style: ToastStyle.flatColored,
@@ -352,7 +356,7 @@ Widget transact({
               type: type,
               amt: amt,
               category: category,
-              note: noteController?.text.trim() ?? "",
+              note: noteController?.text.trim(),
             );
 
             ToastifyFlutter.success(
@@ -381,7 +385,7 @@ Widget transact({
         style: ElevatedButton.styleFrom(
           shape: const StadiumBorder(),
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 32),
-          backgroundColor: Color.fromARGB(255, 200, 125, 135),
+          backgroundColor: const Color.fromARGB(150, 248, 187, 208),
         ),
         child: Text(
           label,
@@ -398,13 +402,21 @@ Widget categories({
   required List<String> categories,
   required ValueChanged<String?> onChanged,
 }) {
-  return DropdownButton<String>(
-    hint: Text("Select Category"),
-    value: selectedCategory,
-    isExpanded: true,
-    onChanged: onChanged,
-    items: categories.map((String c) {
-      return DropdownMenuItem<String>(value: c, child: Text(c));
-    }).toList(),
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 15),
+    decoration: BoxDecoration(
+      //color: Colors.white,
+      borderRadius: BorderRadius.circular(14),
+      //border: Border.all(color: Colors.black12),
+    ),
+    child: DropdownButton<String>(
+      hint: Text("Select Category"),
+      value: selectedCategory,
+      isExpanded: true,
+      onChanged: onChanged,
+      items: categories.map((String c) {
+        return DropdownMenuItem<String>(value: c, child: Text(c));
+      }).toList(),
+    ),
   );
 }

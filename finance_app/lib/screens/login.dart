@@ -60,7 +60,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Login"),
-        backgroundColor: Color.fromARGB(255, 200, 125, 135),
+        backgroundColor: const Color.fromARGB(150, 248, 187, 208),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -92,7 +92,7 @@ class _LoginState extends State<Login> {
               style: ElevatedButton.styleFrom(
                 shape: const StadiumBorder(),
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Color.fromARGB(255, 200, 125, 135),
+                backgroundColor: const Color.fromARGB(150, 248, 187, 208),
               ),
               child: const Text(
                 "Login",

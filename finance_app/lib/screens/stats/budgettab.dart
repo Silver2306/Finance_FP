@@ -1,6 +1,7 @@
 import 'package:finance_app/components-services/firebase_services.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:toastify_flutter/toastify_flutter.dart';
 
 class BudgetTab extends StatefulWidget {
   const BudgetTab({super.key});
@@ -16,6 +17,23 @@ class _BudgetTabState extends State<BudgetTab> {
   double expensePercent = 0;
   double balancePercent = 0;
   bool isLoading = true;
+  int selectedYear = DateTime.now().year;
+  int selectedMonth = DateTime.now().month; // 1-12
+
+  final List<String> monthLabels = const [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   @override
   void initState() {
@@ -23,36 +41,57 @@ class _BudgetTabState extends State<BudgetTab> {
     _loadPieData();
   }
 
+  bool _hasShownOverBudgetToast = false;
+
+  void _checkOverBudget() {
+    if (_hasShownOverBudgetToast) return;
+
+    if (expense > budget && budget > 0) {
+      ToastifyFlutter.error(
+        context,
+        message: "You have exceeded your budget!",
+        duration: 10,
+        position: ToastPosition.top,
+        style: ToastStyle.flatColored,
+      );
+
+      _hasShownOverBudgetToast = true;
+    }
+  }
+
   Future<void> _loadPieData() async {
-    final data = await fetchDashboardData();
+    setState(() => isLoading = true);
+
+    final data = await piegraph(year: selectedYear, month: selectedMonth);
 
     final fetchedBudget = data["budget"] ?? 0.0;
     final fetchedExpense = data["expense"] ?? 0.0;
+    final fetchedBalance = data["balance"] ?? 0.0;
 
-    // Always calculate balance FIRST
-    final double calculatedBalance = (fetchedBudget - fetchedExpense).clamp(
-      0,
-      double.infinity,
-    );
+    final safeExpense = fetchedExpense < 0 ? 0.0 : fetchedExpense;
+    final safeBalance = fetchedBalance < 0 ? 0.0 : fetchedBalance;
+
+    final pieBalance = fetchedBalance < 0 ? 0.0 : fetchedBalance;
 
     double expPercent = 0;
     double balPercent = 0;
 
     // Calculate percentages ONLY if budget > 0
     if (fetchedBudget > 0) {
-      expPercent = (fetchedExpense / fetchedBudget) * 100;
-      balPercent = (calculatedBalance / fetchedBudget) * 100;
+      expPercent = (safeExpense / fetchedBudget) * 100;
+      balPercent = (pieBalance / fetchedBudget) * 100;
     }
 
     if (mounted) {
       setState(() {
         budget = fetchedBudget;
-        expense = fetchedExpense;
-        balance = calculatedBalance;
+        expense = safeBalance;
+        balance = safeBalance;
         expensePercent = expPercent;
         balancePercent = balPercent;
         isLoading = false;
       });
+      _checkOverBudget();
     }
   }
 
@@ -70,6 +109,41 @@ class _BudgetTabState extends State<BudgetTab> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 12,
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      //color: Colors.white,
+                      borderRadius: BorderRadius.circular(14),
+                      //border: Border.all(color: Colors.black12),
+                    ),
+                    //child: DropdownButtonHideUnderline(
+                    child: DropdownButton<int>(
+                      value: selectedMonth,
+                      isExpanded: true,
+                      items: List.generate(12, (i) {
+                        final m = i + 1;
+                        return DropdownMenuItem(
+                          value: m,
+                          child: Text(monthLabels[i]),
+                        );
+                      }),
+                      onChanged: (m) async {
+                        if (m == null) return;
+                        setState(() {
+                          selectedMonth = m;
+                          _hasShownOverBudgetToast = false;
+                        });
+                        await _loadPieData();
+                      },
+                    ),
+                  ),
+                ),
+
                 // Pie Chart
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.85,

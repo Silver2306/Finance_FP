@@ -15,6 +15,9 @@ class Incometab extends StatefulWidget {
 class _IncometabState extends State<Incometab> {
   List<int> _dailyIncome = List.filled(7, 0);
 
+  int selectedYear = DateTime.now().year;
+  int selectedMonth = DateTime.now().month; // 1-12
+
   @override
   void initState() {
     super.initState();
@@ -22,7 +25,7 @@ class _IncometabState extends State<Incometab> {
   }
 
   Future<void> _loadIncome() async {
-    final data = await barIncome(); // ← your function from earlier
+    final data = await barIncome(year: selectedYear, month: selectedMonth);
     if (mounted) {
       setState(() => _dailyIncome = data);
     }
@@ -46,7 +49,7 @@ class _IncometabState extends State<Incometab> {
                 child: BarChart(
                   BarChartData(
                     alignment: BarChartAlignment.spaceAround,
-                    maxY: 10000,
+                    maxY: 20000,
                     barTouchData: BarTouchData(enabled: false),
                     titlesData: FlTitlesData(
                       bottomTitles: AxisTitles(
@@ -77,7 +80,7 @@ class _IncometabState extends State<Incometab> {
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          interval: 2000, // 👈 spacing
+                          interval: 5000, // 👈 spacing
                           reservedSize: 42,
                           getTitlesWidget: (value, meta) {
                             return Text(
