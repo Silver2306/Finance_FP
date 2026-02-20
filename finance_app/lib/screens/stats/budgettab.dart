@@ -71,21 +71,19 @@ class _BudgetTabState extends State<BudgetTab> {
     final safeExpense = fetchedExpense < 0 ? 0.0 : fetchedExpense;
     final safeBalance = fetchedBalance < 0 ? 0.0 : fetchedBalance;
 
-    final pieBalance = fetchedBalance < 0 ? 0.0 : fetchedBalance;
-
     double expPercent = 0;
     double balPercent = 0;
 
     // Calculate percentages ONLY if budget > 0
     if (fetchedBudget > 0) {
       expPercent = (safeExpense / fetchedBudget) * 100;
-      balPercent = (pieBalance / fetchedBudget) * 100;
+      balPercent = (safeBalance / fetchedBudget) * 100;
     }
 
     if (mounted) {
       setState(() {
         budget = fetchedBudget;
-        expense = safeBalance;
+        expense = safeExpense;
         balance = safeBalance;
         expensePercent = expPercent;
         balancePercent = balPercent;

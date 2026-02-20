@@ -27,6 +27,8 @@ class MyApp extends StatelessWidget {
       initialRoute: initial,
       routes: AppRoutes.routes,
       theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
         scaffoldBackgroundColor: const Color.fromARGB(255, 250, 245, 240),
       ),
     );
