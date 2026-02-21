@@ -95,62 +95,73 @@ class RecentTransactions extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // Row(
+                        //   children: [
+                        //     Container(
+                        //       width: 50,
+                        //       height: 50,
+                        //       child: Icon(Icons.currency_rupee_outlined),
+                        //     ),
+                        //     SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              tx.category,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onBackground,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            if (tx.note != null && tx.note!.trim().isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4),
+                                child: Text(
+                                  tx.note!,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.outline,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                        //],
+                        //),
                         Row(
                           children: [
-                            Container(
-                              width: 50,
-                              height: 50,
-                              child: Icon(Icons.currency_rupee_outlined),
-                            ),
-                            SizedBox(width: 12),
                             Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  tx.category,
+                                  "$sign${NumberFormat('#,##0', 'en_IN').format(displayAmount)}",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: color,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                Text(
+                                  _formatDate(tx.date),
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Theme.of(
                                       context,
-                                    ).colorScheme.onBackground,
-                                    fontWeight: FontWeight.w500,
+                                    ).colorScheme.outline,
+                                    fontWeight: FontWeight.w400,
                                   ),
                                 ),
-                                if (tx.note != null &&
-                                    tx.note!.trim().isNotEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 4),
-                                    child: Text(
-                                      tx.note!,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.outline,
-                                      ),
-                                    ),
-                                  ),
                               ],
                             ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              "$sign${NumberFormat('#,##0', 'en_IN').format(displayAmount)}",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: color,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Text(
-                              _formatDate(tx.date),
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Theme.of(context).colorScheme.outline,
-                                fontWeight: FontWeight.w400,
-                              ),
+                            const SizedBox(width: 8),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.delete),
                             ),
                           ],
                         ),
