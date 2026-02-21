@@ -50,7 +50,7 @@ class _BudgetTabState extends State<BudgetTab> {
       ToastifyFlutter.error(
         context,
         message: "You have exceeded your budget!",
-        duration: 10,
+        duration: 5,
         position: ToastPosition.top,
         style: ToastStyle.flatColored,
       );

@@ -33,6 +33,13 @@ class _IncometabState extends State<Incometab> {
 
   @override
   Widget build(BuildContext context) {
+    final int maxVal = _dailyIncome.isEmpty
+        ? 0
+        : _dailyIncome.reduce((a, b) => a > b ? a : b);
+
+    final double maxY = maxVal == 0 ? 1 : maxVal * 1.2;
+
+    final double interval = (maxY / 5).ceilToDouble().clamp(1, double.infinity);
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Column(
@@ -49,7 +56,7 @@ class _IncometabState extends State<Incometab> {
                 child: BarChart(
                   BarChartData(
                     alignment: BarChartAlignment.spaceAround,
-                    maxY: 20000,
+                    maxY: maxY,
                     barTouchData: BarTouchData(enabled: false),
                     titlesData: FlTitlesData(
                       bottomTitles: AxisTitles(
@@ -80,7 +87,7 @@ class _IncometabState extends State<Incometab> {
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          interval: 5000, // 👈 spacing
+                          interval: interval, // 👈 spacing
                           reservedSize: 42,
                           getTitlesWidget: (value, meta) {
                             return Text(

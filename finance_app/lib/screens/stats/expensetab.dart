@@ -24,12 +24,21 @@ class _ExpensetabState extends State<Expensetab> {
   Future<void> _loadExpense() async {
     final data = await barExpense(year: selectedYear, month: selectedMonth);
     if (mounted) {
-      setState(() => _dailyExpense = data);
+      setState(() {
+        _dailyExpense = data;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final int maxVal = _dailyExpense.isEmpty
+        ? 0
+        : _dailyExpense.reduce((a, b) => a > b ? a : b);
+
+    final double maxY = maxVal == 0 ? 1 : maxVal * 1.2;
+    final double interval = (maxY / 5).ceilToDouble().clamp(1, double.infinity);
+
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Column(
@@ -46,7 +55,7 @@ class _ExpensetabState extends State<Expensetab> {
                 child: BarChart(
                   BarChartData(
                     alignment: BarChartAlignment.spaceAround,
-                    maxY: 20000,
+                    maxY: maxY,
                     barTouchData: BarTouchData(enabled: false),
                     titlesData: FlTitlesData(
                       bottomTitles: AxisTitles(
@@ -79,7 +88,7 @@ class _ExpensetabState extends State<Expensetab> {
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          interval: 5000,
+                          interval: interval,
                           reservedSize: 42,
                           getTitlesWidget: (value, meta) {
                             return Text(
