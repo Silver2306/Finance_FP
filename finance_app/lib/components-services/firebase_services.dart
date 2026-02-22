@@ -7,7 +7,7 @@ final db = FirebaseDatabase.instanceFor(
   app: Firebase.app(),
   databaseURL:
       "https://finance-fp-default-rtdb.asia-southeast1.firebasedatabase.app/",
-);
+); // creates a database instance connected to our RTDB, basically a connection to the database
 
 Future<void> addTransaction({
   required String type,
@@ -127,6 +127,7 @@ typedef Stats = ({
   DateTime date,
 });
 
+//get Transaction
 Future<List<TransactionSummary>> getTransaction({int limit = 5}) async {
   final user = FirebaseAuth.instance.currentUser;
 

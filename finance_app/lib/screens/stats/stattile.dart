@@ -32,7 +32,7 @@ class expenseTile extends StatelessWidget {
             ],
           );
         },
-      ),
+      ),  
     );
   }
 }

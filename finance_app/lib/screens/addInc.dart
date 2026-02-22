@@ -24,40 +24,42 @@ class _AddincState extends State<Addinc> {
   Widget build(BuildContext context) {
     return Scaffold(
       //appBar: AppBar(title: Text("Add Income")),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            inputField(
-              controller: amtcontroller,
-              hintText: "Enter Amount",
-              keyboardType: TextInputType.number,
-              prefixIcon: Icons.currency_rupee_rounded,
-            ),
-            categories(
-              selectedCategory: _selectedCategory,
-              categories: _categories,
-              onChanged: (value) {
-                setState(() {
-                  _selectedCategory = value;
-                });
-              },
-            ),
-            inputField(
-              controller: notecontroller,
-              hintText: "Notes/Description",
-              prefixIcon: Icons.notes,
-            ),
-            transact(
-              context: context,
-              label: "Add Income",
-              type: 'income',
-              amtController: amtcontroller,
-              category: _selectedCategory,
-              noteController: notecontroller,
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              inputField(
+                controller: amtcontroller,
+                hintText: "Enter Amount",
+                keyboardType: TextInputType.number,
+                prefixIcon: Icons.currency_rupee_rounded,
+              ),
+              categories(
+                selectedCategory: _selectedCategory,
+                categories: _categories,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedCategory = value;
+                  });
+                },
+              ),
+              inputField(
+                controller: notecontroller,
+                hintText: "Notes/Description",
+                prefixIcon: Icons.notes,
+              ),
+              transact(
+                context: context,
+                label: "Add Income",
+                type: 'income',
+                amtController: amtcontroller,
+                category: _selectedCategory,
+                noteController: notecontroller,
+              ),
+            ],
+          ),
         ),
       ),
     );
