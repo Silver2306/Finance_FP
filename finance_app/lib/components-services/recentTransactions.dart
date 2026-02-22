@@ -15,9 +15,11 @@ String _formatDate(DateTime date) {
   }
   return DateFormat('d MMM').format(date);
 }
+
 class RecentTransactions extends StatefulWidget {
   final int limit;
-  final VoidCallback? onTransactionChanged;//for dashboard updates after deletion
+  final VoidCallback?
+  onTransactionChanged; //for dashboard updates after deletion
 
   const RecentTransactions({
     super.key,
@@ -33,24 +35,24 @@ class _RecentTransactionsState extends State<RecentTransactions> {
   late Future<List<TransactionSummary>> _transactionsFuture;
   //final int limit; // ← add this
 
-   @override
+  @override
   void initState() {
     super.initState();
     _refresh();
   }
 
   void _refresh() {
-
-setState(() {
-    _transactionsFuture = getTransaction(limit: widget.limit);
-  });  }
+    setState(() {
+      _transactionsFuture = getTransaction(limit: widget.limit);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: FutureBuilder<List<TransactionSummary>>(
-        future: getTransaction(),
+        future: _transactionsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -185,7 +187,6 @@ setState(() {
                                 await deleteTransaction(tx.key);
                                 _refresh();
                                 widget.onTransactionChanged?.call();
-                                
                               },
                               icon: Icon(Icons.delete),
                             ),

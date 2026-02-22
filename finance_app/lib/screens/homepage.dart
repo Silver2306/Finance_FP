@@ -242,9 +242,11 @@ class _HomepageState extends State<Homepage> {
                     thickness: 5,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
-                      physics:
-                          const BouncingScrollPhysics(), 
-                      child: RecentTransactions(limit: 4,onTransactionChanged: refreshDashboard,),
+                      physics: const BouncingScrollPhysics(),
+                      child: RecentTransactions(
+                        limit: 4,
+                        onTransactionChanged: refreshDashboard,
+                      ),
                     ),
                   ),
                 ),
@@ -256,9 +258,8 @@ class _HomepageState extends State<Homepage> {
                         builder: (context) => const Transactions(),
                       ),
                     );
-                     refreshDashboard();  
-                     setState(() {});
-                    
+                    refreshDashboard();
+                    setState(() {});
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),

@@ -175,6 +175,10 @@ Future<List<TransactionSummary>> getTransaction({int limit = 5}) async {
     });
     transactions.sort((a, b) => b.date.compareTo(a.date));
 
+    if (limit > 0 && transactions.length > limit) {
+      transactions = transactions.take(limit).toList();
+    }
+
     return transactions;
   } catch (e, stack) {
     debugPrint('Error fetching transactions: $e\n$stack');
@@ -203,7 +207,7 @@ Future<Map<String, double>> getIncome({
 
   for (final t in transactionStats) {
     if (t.type == 'income') {
-      if (t.date.year == year || t.date.month == month) {
+      if (t.date.year == year && t.date.month == month) {
         final cat = t.category;
         incomeStats[cat] = (incomeStats[cat] ?? 0) + t.amount;
       }
@@ -223,7 +227,7 @@ Future<Map<String, double>> getExpense({
 
   for (final t in transactionStats) {
     if (t.type == 'expense') {
-      if (t.date.year == year || t.date.month == month) {
+      if (t.date.year == year && t.date.month == month) {
         final cat = t.category;
         expenseStats[cat] = (expenseStats[cat] ?? 0) + t.amount;
       }
@@ -264,7 +268,7 @@ Future<List<int>> barExpense({required int year, required int month}) async {
     'Food',
     'Clothes',
     'Travel',
-    'Gifts',
+    'Gifts',  
     'Entertainment',
     'College',
     'Misc',
