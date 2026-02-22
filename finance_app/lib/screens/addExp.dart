@@ -26,40 +26,46 @@ class _AddexpState extends State<Addexp> {
   Widget build(BuildContext context) {
     return Scaffold(
       //appBar: AppBar(title: Text("Add Expense")),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            inputField(
-              controller: amtcontroller,
-              hintText: "Enter Amount",
-              keyboardType: TextInputType.number,
-              prefixIcon: Icons.currency_rupee_rounded,
+      body: Center(
+        child: SingleChildScrollView(
+          // child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Align(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                inputField(
+                  controller: amtcontroller,
+                  hintText: "Enter Amount",
+                  keyboardType: TextInputType.number,
+                  prefixIcon: Icons.currency_rupee_rounded,
+                ),
+                categories(
+                  selectedCategory: _selectedCategory,
+                  categories: _categories,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedCategory = value;
+                    });
+                  },
+                ),
+                inputField(
+                  controller: notecontroller,
+                  hintText: "Notes/Description",
+                  prefixIcon: Icons.notes,
+                ),
+                transact(
+                  context: context,
+                  label: "Add Expense",
+                  type: 'expense',
+                  amtController: amtcontroller,
+                  category: _selectedCategory,
+                  noteController: notecontroller,
+                ),
+              ],
             ),
-            categories(
-              selectedCategory: _selectedCategory,
-              categories: _categories,
-              onChanged: (value) {
-                setState(() {
-                  _selectedCategory = value;
-                });
-              },
-            ),
-            inputField(
-              controller: notecontroller,
-              hintText: "Notes/Description",
-              prefixIcon: Icons.notes,
-            ),
-            transact(
-              context: context,
-              label: "Add Expense",
-              type: 'expense',
-              amtController: amtcontroller,
-              category: _selectedCategory,
-              noteController: notecontroller,
-            ),
-          ],
+          ),
         ),
       ),
     );
