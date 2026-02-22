@@ -98,12 +98,6 @@ Widget displayCard({
   required String amount,
   required double inctotal,
   required double exptotal,
-  //required String goToText,
-  //required String appRoute,
-  required double height,
-  required double width,
-  Color backgroundColor = const Color(0xFFFDE7D3),
-  //IconData icon = Icons.trending_up,
 }) {
   return Card(
     elevation: 0,
@@ -116,8 +110,8 @@ Widget displayCard({
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: Container(
-          height: height,
-          width: width,
+          height:  MediaQuery.of(context).size.width / 2 + 20,
+          width:MediaQuery.of(context).size.width - 20,
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
@@ -125,13 +119,10 @@ Widget displayCard({
               colors: [
                 const Color(0xFFF8BBD0).withOpacity(0.35), // baby pink
                 const Color(0xFFFCE4EC).withOpacity(0.25),
-                //Color.fromARGB(255, 244, 198, 206),
-                //Color.fromARGB(129, 233, 4, 42),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            //borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: Colors.white.withOpacity(0.4),
               width: 1.5,
@@ -157,7 +148,7 @@ Widget displayCard({
                   letterSpacing: 0.5,
                 ),
               ),
-              //Icon(icon),
+              
               SizedBox(height: 5),
               Text(
                 amount,

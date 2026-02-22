@@ -213,18 +213,6 @@ class _HomepageState extends State<Homepage> {
                                 context: context,
                                 title: "Budget",
                                 amount: "₹${budget.toStringAsFixed(2)}",
-                                //goToText: "Add Income",
-                                //appRoute: AppRoutes.addinc,
-                                backgroundColor: const Color.fromARGB(
-                                  255,
-                                  240,
-                                  196,
-                                  203,
-                                ),
-                                //icon: Icons.arrow_upward,
-                                height:
-                                    MediaQuery.of(context).size.width / 2 + 20,
-                                width: MediaQuery.of(context).size.width - 20,
                                 inctotal: income,
                                 exptotal: expense,
                               );
@@ -234,9 +222,6 @@ class _HomepageState extends State<Homepage> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -258,19 +243,22 @@ class _HomepageState extends State<Homepage> {
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       physics:
-                          const BouncingScrollPhysics(), // nice feel on iOS/Android
-                      child: RecentTransactions(limit: 4),
+                          const BouncingScrollPhysics(), 
+                      child: RecentTransactions(limit: 4,onTransactionChanged: refreshDashboard,),
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
+                  onTap: () async {
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const Transactions(),
                       ),
                     );
+                     refreshDashboard();  
+                     setState(() {});
+                    
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),

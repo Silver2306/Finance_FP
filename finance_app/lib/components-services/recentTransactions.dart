@@ -15,14 +15,35 @@ String _formatDate(DateTime date) {
   }
   return DateFormat('d MMM').format(date);
 }
-
-class RecentTransactions extends StatelessWidget {
-  final int limit; // ← add this
+class RecentTransactions extends StatefulWidget {
+  final int limit;
+  final VoidCallback? onTransactionChanged;//for dashboard updates after deletion
 
   const RecentTransactions({
     super.key,
-    this.limit = 3, // default to 3 if not specified
+    this.limit = 3,
+    this.onTransactionChanged,
   });
+
+  @override
+  State<RecentTransactions> createState() => _RecentTransactionsState();
+}
+
+class _RecentTransactionsState extends State<RecentTransactions> {
+  late Future<List<TransactionSummary>> _transactionsFuture;
+  //final int limit; // ← add this
+
+   @override
+  void initState() {
+    super.initState();
+    _refresh();
+  }
+
+  void _refresh() {
+
+setState(() {
+    _transactionsFuture = getTransaction(limit: widget.limit);
+  });  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +74,7 @@ class RecentTransactions extends StatelessWidget {
             );
           }
 
-          final transactions = snapshot.data?.take(limit) ?? [];
+          final transactions = snapshot.data ?? [];
 
           if (transactions.isEmpty) {
             return const Center(
@@ -160,7 +181,12 @@ class RecentTransactions extends StatelessWidget {
                             ),
                             const SizedBox(width: 8),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await deleteTransaction(tx.key);
+                                _refresh();
+                                widget.onTransactionChanged?.call();
+                                
+                              },
                               icon: Icon(Icons.delete),
                             ),
                           ],

@@ -28,7 +28,7 @@ class _TransactionsState extends State<Transactions> {
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 physics:
-                    const BouncingScrollPhysics(), // nice feel on iOS/Android
+                    const BouncingScrollPhysics(), 
                 child: RecentTransactions(limit: 30),
               ),
             ),

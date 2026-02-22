@@ -301,3 +301,14 @@ Future<Map<String, double>> piegraph({
 
   return barstats;
 }
+
+Future<void> deleteTransaction(String key) async {
+  final user = FirebaseAuth.instance.currentUser;
+
+  if (user == null) return;
+
+  final userId = user.uid;
+  final path = 'users/$userId/transactions/$key';
+
+  await db.ref().child(path).remove();
+}
