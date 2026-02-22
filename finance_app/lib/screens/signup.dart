@@ -131,7 +131,7 @@ class _SignUpState extends State<SignUp> {
             SizedBox(height: 5),
             inputField(
               controller: name,
-              hintText: "Name: ",
+              hintText: "Full Name ",
               prefixIcon: Icons.person,
             ),
             inputField(

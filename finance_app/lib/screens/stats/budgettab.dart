@@ -209,13 +209,13 @@ class _BudgetTabState extends State<BudgetTab> {
                     _legendItem(
                       Color.fromARGB(149, 233, 4, 42),
                       "Expense",
-                      expense.toStringAsFixed(0),
+                      expense.toStringAsFixed(2),
                       expensePercent,
                     ),
                     _legendItem(
                       Color.fromARGB(207, 56, 172, 141),
                       "Balance",
-                      balance.toStringAsFixed(0),
+                      balance.toStringAsFixed(2),
                       balancePercent,
                     ),
                   ],
