@@ -11,7 +11,7 @@ final db = FirebaseDatabase.instanceFor(
 
 Future<void> addTransaction({
   required String type,
-  required int amt,
+  required double amt,
   required String category,
   String? note,
 }) async {

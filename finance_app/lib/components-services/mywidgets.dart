@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:finance_app/components-services/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:toastify_flutter/toastify_flutter.dart';
 import 'firebase_services.dart';
 
@@ -110,8 +111,8 @@ Widget displayCard({
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
         child: Container(
-          height:  MediaQuery.of(context).size.width / 2 + 20,
-          width:MediaQuery.of(context).size.width - 20,
+          height: MediaQuery.of(context).size.width / 2 + 20,
+          width: MediaQuery.of(context).size.width - 20,
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
@@ -148,7 +149,7 @@ Widget displayCard({
                   letterSpacing: 0.5,
                 ),
               ),
-              
+
               SizedBox(height: 5),
               Text(
                 amount,
@@ -277,6 +278,12 @@ Widget inputField({
         controller: controller,
         obscureText: obscureText,
         keyboardType: keyboardType,
+        maxLength: hintText == "Notes/Description" ? 20 : null,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(
+            RegExp(r'[ -~]'), // printable ASCII only
+          ),
+        ],
         decoration: InputDecoration(
           hintText: hintText,
           border: OutlineInputBorder(
@@ -319,7 +326,7 @@ Widget transact({
             );
             return;
           }
-          final amt = int.tryParse(amtText);
+          final amt = double.tryParse(amtText);
           if (amt == null || amt < 0) {
             ToastifyFlutter.error(
               context,

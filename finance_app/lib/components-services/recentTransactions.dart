@@ -162,7 +162,7 @@ class _RecentTransactionsState extends State<RecentTransactions> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  "$sign${NumberFormat('#,##0', 'en_IN').format(displayAmount)}",
+                                  "$sign${NumberFormat('#,##0.00', 'en_IN').format(displayAmount)}",
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: color,

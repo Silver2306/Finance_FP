@@ -164,7 +164,7 @@ class _ProfileState extends State<Profile> {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : Text(
-                          "Monthly Budget: ₹${currentBudget.toStringAsFixed(0)}",
+                          "Monthly Budget: ₹${currentBudget.toStringAsFixed(2)}",
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
