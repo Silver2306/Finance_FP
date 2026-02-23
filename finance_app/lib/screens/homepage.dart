@@ -20,14 +20,6 @@ class _HomepageState extends State<Homepage> {
   final user = FirebaseAuth.instance.currentUser;
   int selectedYear = DateTime.now().year;
   int selectedMonth = DateTime.now().month;
-  Future<void> signOut() async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      AppRoutes.login,
-      (route) => false,
-    );
-  }
 
   Future<Map<String, double>>? dashboardFuture;
   bool _hasShownOverBudgetWarning = false;

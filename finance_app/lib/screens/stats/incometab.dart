@@ -13,7 +13,7 @@ class Incometab extends StatefulWidget {
 }
 
 class _IncometabState extends State<Incometab> {
-  List<int> _dailyIncome = List.filled(7, 0);
+  List<double> _dailyIncome = List.filled(7, 0);
 
   int selectedYear = DateTime.now().year;
   int selectedMonth = DateTime.now().month; // 1-12
@@ -33,7 +33,7 @@ class _IncometabState extends State<Incometab> {
 
   @override
   Widget build(BuildContext context) {
-    final int maxVal = _dailyIncome.isEmpty
+    final double maxVal = _dailyIncome.isEmpty
         ? 0
         : _dailyIncome.reduce((a, b) => a > b ? a : b);
 

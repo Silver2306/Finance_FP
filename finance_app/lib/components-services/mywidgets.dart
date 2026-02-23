@@ -30,7 +30,7 @@ Widget header(
   );
 }
 
-//Custom Elevated Button - bg: purple, text: white
+//Custom Elevated Button - bg: baby-pink, text: white
 Widget appButton({
   required BuildContext context,
   required String label,

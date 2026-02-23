@@ -79,8 +79,7 @@ Future<Map<String, double>> fetchDashboardData({
 
       final typeRaw = txValue["type"]?.toString().toLowerCase() ?? "";
       final amountRaw = txValue["amount"];
-      final timestampRaw =
-          txValue["timestamp"]; // ← assuming you store timestamp
+      final timestampRaw = txValue["timestamp"];
 
       double amount = 0.0;
       if (amountRaw is num) {
@@ -167,7 +166,7 @@ Future<List<TransactionSummary>> getTransaction({int limit = 5}) async {
 
       transactions.add((
         key: key as String,
-        category: (txMap['category'] as String?)?.trim() ?? 'Other',
+        category: (txMap['category'] as String?)?.trim() ?? 'Misc',
         amount: amount,
         type: type, // "expense" or "income"
         date: date,
@@ -238,7 +237,7 @@ Future<Map<String, double>> getExpense({
   return expenseStats;
 }
 
-Future<List<int>> barIncome({required int year, required int month}) async {
+Future<List<double>> barIncome({required int year, required int month}) async {
   final incomeStats = await getIncome(year: year, month: month, limit: 50);
   const categoriesOrder = [
     'Salary',
@@ -248,7 +247,7 @@ Future<List<int>> barIncome({required int year, required int month}) async {
     'Misc',
   ];
 
-  final List<int> values = List.filled(categoriesOrder.length, 0);
+  final List<double> values = List.filled(categoriesOrder.length, 0);
 
   for (final entry in incomeStats.entries) {
     final index = categoriesOrder.indexOf(entry.key);
@@ -256,26 +255,26 @@ Future<List<int>> barIncome({required int year, required int month}) async {
       values[index] += entry.value.toInt();
     } else {
       // optional: add unknown categories to "Other"
-      values.last += entry.value.toInt();
+      values.last += entry.value.toDouble();
     }
   }
 
   return values;
 }
 
-Future<List<int>> barExpense({required int year, required int month}) async {
+Future<List<double>> barExpense({required int year, required int month}) async {
   final expenseStats = await getExpense(year: year, month: month, limit: 50);
   const categoriesOrder = [
     'Food',
     'Clothes',
     'Travel',
-    'Gifts',  
+    'Gifts',
     'Entertainment',
     'College',
     'Misc',
   ];
 
-  final List<int> values = List.filled(categoriesOrder.length, 0);
+  final List<double> values = List.filled(categoriesOrder.length, 0);
 
   for (final entry in expenseStats.entries) {
     final index = categoriesOrder.indexOf(entry.key);

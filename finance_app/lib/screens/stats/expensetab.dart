@@ -11,7 +11,7 @@ class Expensetab extends StatefulWidget {
 }
 
 class _ExpensetabState extends State<Expensetab> {
-  List<int> _dailyExpense = List.filled(7, 0);
+  List<double> _dailyExpense = List.filled(7, 0);
   int selectedYear = DateTime.now().year;
   int selectedMonth = DateTime.now().month; // 1-12
 
@@ -32,7 +32,7 @@ class _ExpensetabState extends State<Expensetab> {
 
   @override
   Widget build(BuildContext context) {
-    final int maxVal = _dailyExpense.isEmpty
+    final double maxVal = _dailyExpense.isEmpty
         ? 0
         : _dailyExpense.reduce((a, b) => a > b ? a : b);
 

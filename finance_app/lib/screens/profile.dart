@@ -127,36 +127,10 @@ class _ProfileState extends State<Profile> {
 
             const SizedBox(height: 24),
 
-            // 💰 Budget Card
-            // Card(
-            // shape: OutlineInputBorder(
-            //   borderRadius: BorderRadius.circular(18),
-            //   borderSide: BorderSide.none,
-            // ),
-            //color: Color.fromARGB(255, 240, 196, 203),
-            // child:
             Padding(
               padding: const EdgeInsets.all(14),
               child: Row(
                 children: [
-                  // const Icon(
-                  //   Icons.currency_rupee_rounded,
-                  //   color: Colors.black54,
-                  //   size: 28,
-                  // ),
-                  //const SizedBox(width: 12),
-                  // StreamBuilder(
-                  //   stream: db.ref("users/${user?.uid}/budget").onValue,
-                  //   builder: (context, snapshot) {
-                  //     if (snapshot.hasData &&
-                  //         snapshot.data?.snapshot.value != null) {
-                  //       final budget = (snapshot.data!.snapshot.value as num)
-                  //           .toDouble();
-                  //       return Text("Budget: ₹${budget.toStringAsFixed(0)}");
-                  //     }
-                  //     return const Text("No budget set");
-                  //   },
-                  // ),
                   isBudgetLoading
                       ? const SizedBox(
                           height: 18,
@@ -174,7 +148,6 @@ class _ProfileState extends State<Profile> {
               ),
             ),
 
-            // ),
             const SizedBox(height: 30),
             inputField(
               controller: budgetController,

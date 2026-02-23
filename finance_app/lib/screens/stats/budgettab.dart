@@ -17,6 +17,7 @@ class _BudgetTabState extends State<BudgetTab> {
   double expensePercent = 0;
   double balancePercent = 0;
   bool isLoading = true;
+  bool _hasShownOverBudgetToast = false;
   int selectedYear = DateTime.now().year;
   int selectedMonth = DateTime.now().month; // 1-12
 
@@ -40,8 +41,6 @@ class _BudgetTabState extends State<BudgetTab> {
     super.initState();
     _loadPieData();
   }
-
-  bool _hasShownOverBudgetToast = false;
 
   void _checkOverBudget() {
     if (_hasShownOverBudgetToast) return;
@@ -134,7 +133,7 @@ class _BudgetTabState extends State<BudgetTab> {
                         if (m == null) return;
                         setState(() {
                           selectedMonth = m;
-                          _hasShownOverBudgetToast = false;
+                          //_hasShownOverBudgetToast = false;
                         });
                         await _loadPieData();
                       },
@@ -188,7 +187,7 @@ class _BudgetTabState extends State<BudgetTab> {
                           ),
                           const SizedBox(height: 6),
                           Text(
-                            "₹${budget.toStringAsFixed(0)}",
+                            "₹${budget.toStringAsFixed(2)}",
                             style: const TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,

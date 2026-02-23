@@ -184,6 +184,32 @@ class _RecentTransactionsState extends State<RecentTransactions> {
                             const SizedBox(width: 8),
                             IconButton(
                               onPressed: () async {
+                                final confirmed = await showDialog<bool>(
+                                  context: context,
+                                  barrierDismissible:
+                                      true, // tap outside to close
+                                  builder: (ctx) {
+                                    return AlertDialog(
+                                      title: const Text('Delete transaction?'),
+                                      content: Text(
+                                        'This will permanently delete "${tx.category}" , "${tx.amount}"'
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(ctx).pop(false),
+                                          child: const Text('Cancel'),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () =>
+                                              Navigator.of(ctx).pop(true),
+                                          child: const Text('Delete'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                if (confirmed != true) return;
                                 await deleteTransaction(tx.key);
                                 _refresh();
                                 widget.onTransactionChanged?.call();
